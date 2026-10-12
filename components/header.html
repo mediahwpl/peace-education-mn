@@ -1,11 +1,16 @@
+<link rel="stylesheet" href="style.css">
 <header>
     <nav class="navbar">
+
+        <!-- LOGO -->
         <div class="logo">
             <a href="index.html#hero">
                 <img src="HWPL-logo.png" alt="HWPL Logo">
             </a>
         </div>
-        <ul class="nav-links">
+
+        <!-- DESKTOP MENU -->
+        <ul class="nav-links" id="navLinks">
             <li><a href="index.html">Нүүр</a></li>
             <li><a href="about.html">Бидний тухай</a></li>
             <li><a href="PE.html">Энх тайвны боловсрол</a></li>
@@ -13,5 +18,20 @@
             <li><a href="News.html">Мэдээ</a></li>
             <li><a href="#contact">Холбоо барих</a></li>
         </ul>
+
+        <!-- MOBILE HAMBURGER BUTTON -->
+        <button
+            class="hamburger"
+            id="hamburger"
+            aria-label="Цэс нээх"
+            aria-expanded="false"
+            aria-controls="navLinks"
+            type="button"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
     </nav>
 </header>

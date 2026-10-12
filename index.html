@@ -10,15 +10,19 @@
 </head>
 <body>
 
-                                                                        <!-- Header -->
+                                                     <!-- Header -->
 <header>
     <nav class="navbar">
+
+        <!-- LOGO -->
         <div class="logo">
             <a href="#hero">
                 <img src="HWPL-logo.png" alt="HWPL Logo">
             </a>
         </div>
-        <ul class="nav-links">
+
+        <!-- DESKTOP MENU -->
+        <ul class="nav-links" id="navLinks">
             <li><a href="#hero">Нүүр</a></li>
             <li><a href="about.html">Бидний тухай</a></li>
             <li><a href="PE.html">Энх тайвны боловсрол</a></li>
@@ -26,10 +30,25 @@
             <li><a href="News.html">Мэдээ</a></li>
             <li><a href="#contact">Холбоо барих</a></li>
         </ul>
+
+        <!-- MOBILE HAMBURGER BUTTON -->
+        <button
+            class="hamburger"
+            id="hamburger"
+            aria-label="Цэс нээх"
+            aria-expanded="false"
+            aria-controls="navLinks"
+            type="button"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
     </nav>
 </header>
 
-                                                                        <!-- Hero Section -->
+                                                     <!-- Hero Section -->
 <section id="hero">
 
 <div class="hero-layer hero-bg section-reveal reveal-fade"></div>
@@ -43,7 +62,7 @@
 
 </section>
 
-                                                                        <!-- Organization Section -->
+                                                     <!-- Organization Section -->
 <section id="organization">
     <div class="org-container section-reveal reveal-up">
         <div class="org-image">
@@ -60,7 +79,7 @@
     </div>
 </section>
 
-                                                                        <!-- Lesson Section -->
+                                                      <!-- Lesson Section -->
 <section id="lessons" class="section-reveal reveal-down">
     <h2>12 Хичээлийн Танилцуулга</h2>
     <div class="lesson-grid">
@@ -178,7 +197,7 @@
     </div>
 </section>
 
-                                                                            <!-- Peace Letters Section -->
+                                                    <!-- Peace Letters Section -->
 <section id="letters" class="section-reveal reveal-down">
     <h2>Зүрхнээс зүрхэнд - Энх тайвны захидал</h2>
     <div class="letter-grid">
@@ -200,7 +219,7 @@
     </div>
 </section>
 
-                                                                            <!-- Lightbox Modal -->
+                                                    <!-- Lightbox Modal -->
 <div id="lightbox" class="hidden">
     <span id="close">&times;</span>
     <img id="lightbox-img" src="" alt="Peace Letter">
@@ -208,7 +227,7 @@
 
 <script src="script.js"></script>
 
-                                                                            <!-- footer-contact -->
+                                                     <!-- footer-contact -->
 <footer id="contact">
 
 <div class="footer-container">
