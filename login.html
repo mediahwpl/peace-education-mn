@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Цахим хичээл - Peace Education</title>
+    <title>Нэвтрэх - Peace Education</title>
     <link rel="stylesheet" href="login_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
@@ -11,10 +11,187 @@
 <body>
 
 <div id="header"></div>
+<body>
+    <main class="login-page">
 
-<section id="login">
-    
-</section>
+        <!-- Зүүн талын танилцуулга -->
+        <section class="login-visual">
+            <a href="index.html" class="login-logo">
+                <img src="logo-white.png" alt="HWPL Logo">
+            </a>
+            <div class="visual-content">
+                <span class="visual-label">
+                    HWPL PEACE EDUCATION
+                </span>
+                <h1>
+                    Энх тайвныг<br>
+                    хамтдаа бүтээе.
+                </h1>
+                <p>
+                    Энх тайвны боловсролоор дамжуулан
+                    өөрийгөө хөгжүүлж, энх тайван дэлхийг
+                    бүтээхэд хувь нэмрээ оруулаарай.
+                </p>
+                <div class="visual-decoration">
+                    <i class="fa-solid fa-earth-asia"></i>
+                    <span>Education for Peace</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Баруун талын нэвтрэх хэсэг -->
+        <section class="login-content">
+
+            <div class="login-card">
+
+                <a href="index.html" class="mobile-logo">
+                    <img src="HWPL-logo.png" alt="HWPL Logo">
+                </a>
+
+                <div class="login-heading">
+
+                    <span class="login-subtitle">
+                        ТАВТАЙ МОРИЛ
+                    </span>
+
+                    <h2>Нэвтрэх</h2>
+
+                    <p>
+                        Цахим сургалтаа үргэлжлүүлэхийн тулд
+                        бүртгэлээрээ нэвтэрнэ үү.
+                    </p>
+
+                </div>
+
+                <!-- Нэвтрэх форм -->
+                <form id="loginForm">
+
+                    <!-- Email -->
+                    <div class="form-group">
+
+                        <label for="email">
+                            И-мэйл хаяг
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-regular fa-envelope input-icon"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="name@example.com"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Password -->
+                    <div class="form-group">
+
+                        <div class="password-label">
+
+                            <label for="password">
+                                Нууц үг
+                            </label>
+
+                            <a href="forgot-password.html"
+                               class="forgot-password">
+                                Нууц үгээ мартсан уу?
+                            </a>
+
+                        </div>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-lock input-icon"></i>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Нууц үгээ оруулна уу"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                id="togglePassword"
+                                aria-label="Нууц үг харуулах"
+                                aria-pressed="false"
+                            >
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Алдааны болон мэдээллийн хэсэг -->
+                    <div
+                        id="loginMessage"
+                        class="form-message"
+                        role="status"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <!-- Нэвтрэх товч -->
+                    <button type="submit" class="login-button">
+
+                        <span>Нэвтрэх</span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+                </form>
+
+
+                <!-- Бүртгүүлэх -->
+                <div class="login-divider">
+                    <span>Эсвэл</span>
+                </div>
+
+                <div class="register-prompt">
+
+                    <p>
+                        Та бүртгэлгүй байна уу?
+                    </p>
+
+                    <a href="register.html">
+                        Шинээр бүртгүүлэх
+                    </a>
+
+                </div>
+
+
+                <!-- Өмнөх хуудас руу буцах -->
+                <a href="Online_Course.html" class="back-home">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Өмнөх хуудас руу буцах
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Нэвтрэх хуудасны JavaScript -->
+    <script src="login.js"></script>
 
 <div id="footer"></div>
 
