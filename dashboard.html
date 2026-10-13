@@ -12,9 +12,808 @@
 
 <div id="header"></div>
 
-<section id="">
-    
-</section>
+    <!-- Mobile sidebar overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-logo">
+            <a href="index.html">
+                <img src="HWPL-logo.png" alt="HWPL Logo">
+            </a>
+
+            <button
+                class="sidebar-close"
+                id="sidebarClose"
+                aria-label="Цэс хаах"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-label">СУРАЛЦАГЧИЙН ХЭСЭГ</div>
+
+        <nav class="sidebar-nav">
+
+            <a href="#overview" class="nav-link active" data-section="overview">
+                <i class="fa-solid fa-house"></i>
+                <span>Хянах самбар</span>
+            </a>
+
+            <a href="#courses" class="nav-link" data-section="courses">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Миний хичээлүүд</span>
+            </a>
+
+            <a href="#assignments" class="nav-link" data-section="assignments">
+                <i class="fa-solid fa-file-arrow-up"></i>
+                <span>Миний даалгавар</span>
+            </a>
+
+            <a href="#certificate" class="nav-link" data-section="certificate">
+                <i class="fa-solid fa-award"></i>
+                <span>Сертификат</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-label sidebar-label-bottom">
+            ТОХИРГОО
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="#profile" class="nav-link" data-section="profile">
+                <i class="fa-solid fa-user"></i>
+                <span>Миний профайл</span>
+            </a>
+
+            <a href="Online_Course.html" class="nav-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Сургалтын нүүр</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="help-card">
+                <div class="help-icon">
+                    <i class="fa-solid fa-circle-question"></i>
+                </div>
+
+                <h4>Тусламж хэрэгтэй юу?</h4>
+
+                <p>
+                    Сургалттай холбоотой асуултаа бидэнд илгээгээрэй.
+                </p>
+
+                <a href="index.html#contact">
+                    Холбоо барих
+                </a>
+            </div>
+
+            <button class="logout-button" id="logoutButton">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Гарах</span>
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Цэс нээх"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <p class="breadcrumb">Суралцагчийн хэсэг</p>
+                    <h2 id="pageTitle">Хянах самбар</h2>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <button
+                    class="icon-button notification-button"
+                    id="notificationButton"
+                    aria-label="Мэдэгдэл"
+                >
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+
+                <div class="topbar-divider"></div>
+
+                <button class="user-menu" id="userMenu">
+
+                    <div class="avatar" id="userAvatar">С</div>
+
+                    <div class="user-info">
+                        <strong id="userName">Суралцагч</strong>
+                        <span id="userType">Хувь суралцагч</span>
+                    </div>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE SECTIONS -->
+        <div class="dashboard-container">
+
+            <!-- OVERVIEW -->
+            <section class="page-section active" id="overview">
+
+                <div class="welcome-section">
+
+                    <div class="welcome-text">
+                        <span class="eyebrow">
+                            HWPL PEACE EDUCATION
+                        </span>
+
+                        <h1>
+                            Тавтай морил,
+                            <span id="welcomeName">Суралцагч</span>!
+                        </h1>
+
+                        <p>
+                            Энх тайвны боловсролын аяллаа үргэлжлүүлээрэй.
+                            Өнөөдөр шинэ зүйл сурахад тохиромжтой өдөр.
+                        </p>
+                    </div>
+
+                    <div class="welcome-illustration">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+
+                </div>
+
+
+                <!-- STAT CARDS -->
+                <div class="stats-grid">
+
+                    <article class="stat-card">
+
+                        <div class="stat-top">
+                            <div class="stat-icon blue-icon">
+                                <i class="fa-solid fa-book-open"></i>
+                            </div>
+
+                            <span class="stat-label">Нийт хичээл</span>
+                        </div>
+
+                        <div class="stat-value">12</div>
+
+                        <p class="stat-description">
+                            Энх тайвны боловсролын хөтөлбөр
+                        </p>
+
+                    </article>
+
+
+                    <article class="stat-card">
+
+                        <div class="stat-top">
+                            <div class="stat-icon green-icon">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+
+                            <span class="stat-label">Дуусгасан</span>
+                        </div>
+
+                        <div class="stat-value">
+                            <span id="completedCount">0</span>
+                            <small>/ 12</small>
+                        </div>
+
+                        <p class="stat-description">
+                            Амжилттай дуусгасан хичээл
+                        </p>
+
+                    </article>
+
+
+                    <article class="stat-card">
+
+                        <div class="stat-top">
+                            <div class="stat-icon orange-icon">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+
+                            <span class="stat-label">Нийт ахиц</span>
+                        </div>
+
+                        <div class="stat-value">
+                            <span id="overallProgress">0</span>%
+                        </div>
+
+                        <p class="stat-description">
+                            Сургалтын ерөнхий гүйцэтгэл
+                        </p>
+
+                    </article>
+
+
+                    <article class="stat-card">
+
+                        <div class="stat-top">
+                            <div class="stat-icon purple-icon">
+                                <i class="fa-solid fa-file-circle-check"></i>
+                            </div>
+
+                            <span class="stat-label">Даалгавар</span>
+                        </div>
+
+                        <div class="stat-value">
+                            <span id="submittedCount">0</span>
+                            <small>/ 12</small>
+                        </div>
+
+                        <p class="stat-description">
+                            Илгээсэн даалгавар
+                        </p>
+
+                    </article>
+
+                </div>
+
+
+                <!-- PROGRESS + NEXT LESSON -->
+                <div class="overview-grid">
+
+                    <article class="content-card overall-card">
+
+                        <div class="card-heading">
+                            <div>
+                                <h3>Миний сургалтын ахиц</h3>
+
+                                <p>
+                                    12 хичээлийн гүйцэтгэл
+                                </p>
+                            </div>
+
+                            <div class="heading-icon">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                        </div>
+
+                        <div class="progress-circle-wrapper">
+
+                            <div
+                                class="progress-circle"
+                                id="progressCircle"
+                                role="progressbar"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                                aria-valuenow="0"
+                            >
+                                <div class="progress-circle-inner">
+                                    <strong id="circleProgress">0%</strong>
+                                    <span>Гүйцэтгэл</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="progress-legend">
+
+                            <div>
+                                <span class="legend-dot completed-dot"></span>
+                                Дууссан
+                                <strong id="legendCompleted">0</strong>
+                            </div>
+
+                            <div>
+                                <span class="legend-dot current-dot"></span>
+                                Үргэлжилж буй
+                                <strong id="legendInProgress">0</strong>
+                            </div>
+
+                            <div>
+                                <span class="legend-dot locked-dot"></span>
+                                Хүлээгдэж буй
+                                <strong id="legendLocked">12</strong>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="content-card next-lesson-card">
+
+                        <div class="card-heading">
+                            <div>
+                                <h3>Үргэлжлүүлэн суралцах</h3>
+
+                                <p>
+                                    Таны дараагийн хичээл
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="next-lesson-cover">
+                            <div class="cover-overlay"></div>
+
+                            <span class="lesson-tag">
+                                <i class="fa-solid fa-play"></i>
+                                ОНЛАЙН ХИЧЭЭЛ
+                            </span>
+
+                            <i class="fa-solid fa-earth-asia cover-icon"></i>
+                        </div>
+
+                        <div class="next-lesson-info">
+
+                            <span class="lesson-number" id="nextLessonNumber">
+                                ХИЧЭЭЛ 01
+                            </span>
+
+                            <h4 id="nextLessonTitle">
+                                Энх тайвны боловсролын үндэс
+                            </h4>
+
+                            <p id="nextLessonDescription">
+                                Энх тайвны боловсролын талаарх үндсэн ойлголттой танилцаарай.
+                            </p>
+
+                            <div class="mini-progress">
+                                <div class="mini-progress-track">
+                                    <span
+                                        id="nextLessonProgressBar"
+                                        style="width: 0%"
+                                    ></span>
+                                </div>
+
+                                <span id="nextLessonProgressText">0%</span>
+                            </div>
+
+                            <button
+                                class="primary-button full-button"
+                                id="continueLessonButton"
+                            >
+                                Хичээл рүү очих
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <!-- COURSE LIST -->
+                <div class="section-heading" id="courseHeading">
+
+                    <div>
+                        <h2>Миний хичээлүүд</h2>
+
+                        <p>
+                            Хичээлүүдийг дарааллаар нь судалж,
+                            даалгавраа илгээнэ үү.
+                        </p>
+                    </div>
+
+                    <button class="text-button" id="viewAllCourses">
+                        Бүгдийг харах
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                </div>
+
+                <div class="courses-grid" id="coursesGrid">
+                    <!-- dashboard.js хичээлүүдийг үүсгэнэ -->
+                </div>
+
+
+                <!-- CERTIFICATE BANNER -->
+                <article class="certificate-banner">
+
+                    <div class="certificate-banner-icon">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+
+                    <div class="certificate-banner-text">
+
+                        <h3>Энх тайвны боловсролын сертификат</h3>
+
+                        <p>
+                            Бүх 12 хичээлээ бүрэн дуусгаж,
+                            даалгавраа илгээснээр сертификатаа авах боломжтой.
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="secondary-button"
+                        id="viewCertificateButton"
+                    >
+                        Сертификат харах
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                </article>
+
+            </section>
+
+
+            <!-- COURSES -->
+            <section class="page-section" id="courses">
+
+                <div class="page-heading">
+                    <span class="eyebrow">МАНАЙ ХӨТӨЛБӨР</span>
+                    <h1>Миний хичээлүүд</h1>
+
+                    <p>
+                        Хичээл бүрийг дарааллаар нь үзэж,
+                        даалгавраа илгээн сургалтаа дуусгаарай.
+                    </p>
+                </div>
+
+                <div class="course-filter">
+                    <button class="filter-button active" data-filter="all">
+                        Бүх хичээл
+                    </button>
+
+                    <button class="filter-button" data-filter="available">
+                        Боломжтой
+                    </button>
+
+                    <button class="filter-button" data-filter="completed">
+                        Дууссан
+                    </button>
+
+                    <button class="filter-button" data-filter="locked">
+                        Түгжээтэй
+                    </button>
+                </div>
+
+                <div class="courses-grid" id="allCoursesGrid">
+                    <!-- dashboard.js хичээлүүдийг үүсгэнэ -->
+                </div>
+
+            </section>
+
+
+            <!-- ASSIGNMENTS -->
+            <section class="page-section" id="assignments">
+
+                <div class="page-heading">
+                    <span class="eyebrow">ДААЛГАВРЫН ХЭСЭГ</span>
+                    <h1>Миний даалгавар</h1>
+
+                    <p>
+                        Хичээл бүрийн даалгаврын явцыг эндээс хянана.
+                    </p>
+                </div>
+
+                <div class="content-card assignment-overview">
+
+                    <div class="assignment-overview-icon">
+                        <i class="fa-solid fa-file-arrow-up"></i>
+                    </div>
+
+                    <div>
+                        <h3>Даалгаврын гүйцэтгэл</h3>
+
+                        <p id="assignmentSummary">
+                            Та одоогоор 0 даалгавар илгээсэн байна.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="content-card table-card">
+
+                    <div class="card-heading">
+                        <div>
+                            <h3>Даалгаврын жагсаалт</h3>
+
+                            <p>
+                                Хичээл тус бүрийн даалгаврын төлөв
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Хичээл</th>
+                                    <th>Видео</th>
+                                    <th>Даалгавар</th>
+                                    <th>Үйлдэл</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="assignmentsTableBody">
+                                <!-- dashboard.js үүсгэнэ -->
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CERTIFICATE -->
+            <section class="page-section" id="certificate">
+
+                <div class="page-heading">
+                    <span class="eyebrow">АМЖИЛТЫН ҮНЭЛГЭЭ</span>
+                    <h1>Миний сертификат</h1>
+
+                    <p>
+                        Сургалтын бүх шаардлагыг биелүүлсний дараа
+                        сертификатаа авах боломжтой.
+                    </p>
+                </div>
+
+                <div class="certificate-page-card">
+
+                    <div class="certificate-preview-icon">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+
+                    <h2 id="certificateHeading">
+                        Таны амжилтын аялал үргэлжилж байна
+                    </h2>
+
+                    <p id="certificateDescription">
+                        Бүх 12 хичээлийг 100% үзэж,
+                        даалгавраа бүрэн илгээнэ үү.
+                    </p>
+
+                    <div class="certificate-requirements">
+
+                        <div>
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>12 хичээлийг бүрэн үзсэн байх</span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>12 даалгаврыг илгээсэн байх</span>
+                        </div>
+
+                    </div>
+
+                    <button
+                        class="primary-button"
+                        id="downloadCertificateButton"
+                        disabled
+                    >
+                        <i class="fa-solid fa-download"></i>
+                        Сертификат татах
+                    </button>
+
+                    <p class="certificate-note" id="certificateNote">
+                        Сургалтын шаардлагыг биелүүлсний дараа нээгдэнэ.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- PROFILE -->
+            <section class="page-section" id="profile">
+
+                <div class="page-heading">
+                    <span class="eyebrow">ХУВИЙН МЭДЭЭЛЭЛ</span>
+                    <h1>Миний профайл</h1>
+
+                    <p>
+                        Бүртгэлийн мэдээллээ шалгана уу.
+                    </p>
+                </div>
+
+                <div class="content-card profile-card">
+
+                    <div class="profile-avatar" id="profileAvatar">
+                        С
+                    </div>
+
+                    <h2 id="profileName">Суралцагч</h2>
+
+                    <p id="profileEmail">student@example.com</p>
+
+                    <div class="profile-details">
+
+                        <div>
+                            <span>Бүртгэлийн төрөл</span>
+                            <strong id="profileType">Хувь суралцагч</strong>
+                        </div>
+
+                        <div id="organizationProfileRow" hidden>
+                            <span>Байгууллага</span>
+                            <strong id="profileOrganization">—</strong>
+                        </div>
+
+                    </div>
+
+                    <p class="profile-note">
+                        Бодит бүртгэлийн мэдээллийг Supabase Auth болон
+                        хэрэглэгчийн профайлаас аюулгүй байдлаар уншуулна.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- FOOTER -->
+        <footer class="dashboard-footer">
+            <p>
+                © <span id="currentYear"></span> HWPL Peace Education.
+                Бүх эрх хуулиар хамгаалагдсан.
+            </p>
+        </footer>
+
+    </main>
+
+
+    <!-- COURSE MODAL -->
+    <div
+        class="modal"
+        id="courseModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalLessonTitle"
+        hidden
+    >
+
+        <div class="modal-backdrop" data-close-modal></div>
+
+        <div class="modal-content">
+
+            <button
+                class="modal-close"
+                id="modalClose"
+                aria-label="Хаах"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <span class="eyebrow" id="modalLessonNumber">
+                ХИЧЭЭЛ 01
+            </span>
+
+            <h2 id="modalLessonTitle">Хичээлийн нэр</h2>
+
+            <p id="modalLessonDescription"></p>
+
+            <div class="modal-video-placeholder" id="modalVideoPlaceholder">
+
+                <i class="fa-solid fa-circle-play"></i>
+
+                <p>
+                    Видео хичээлийн хэсэг
+                </p>
+
+                <small>
+                    Видео файлын хаягийг холбосны дараа энд тоглоно.
+                </small>
+
+            </div>
+
+            <video
+                class="lesson-video"
+                id="lessonVideo"
+                controls
+                playsinline
+                preload="metadata"
+                hidden
+            ></video>
+
+            <div class="lesson-progress-section">
+
+                <div class="progress-label-row">
+                    <span>Видео үзсэн ахиц</span>
+                    <strong id="modalVideoProgress">0%</strong>
+                </div>
+
+                <div class="mini-progress-track">
+                    <span id="modalVideoProgressBar"></span>
+                </div>
+
+            </div>
+
+            <div class="assignment-upload-section">
+
+                <h3>
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                    Даалгавар илгээх
+                </h3>
+
+                <p>
+                    Хичээлийн даалгаврын файлаа сонгоно уу.
+                </p>
+
+                <form id="assignmentForm">
+
+                    <label class="upload-area" for="assignmentFile">
+
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                        <strong>Файлаа сонгох</strong>
+
+                        <span>
+                            PDF, DOC, DOCX, JPG, PNG
+                        </span>
+
+                        <input
+                            type="file"
+                            id="assignmentFile"
+                            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                        >
+
+                    </label>
+
+                    <p
+                        class="selected-file"
+                        id="selectedFileName"
+                        aria-live="polite"
+                    ></p>
+
+                    <button
+                        type="submit"
+                        class="primary-button full-button"
+                        id="submitAssignmentButton"
+                    >
+                        Даалгавар илгээх
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+
+                    <p class="form-message" id="assignmentMessage"></p>
+
+                </form>
+
+                <div class="submission-status" id="submissionStatus"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NOTIFICATION TOAST -->
+    <div
+        class="toast"
+        id="toast"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+
+    <script src="dashboard.js"></script>
 
 <div id="footer"></div>
 
