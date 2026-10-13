@@ -12,13 +12,410 @@
 
 <div id="header"></div>
 
-<section id="">
-    
-</section>
+<body>
+
+    <main class="register-page">
+
+                                                <!-- LEFT VISUAL PANEL -->
+        <section class="register-visual">
+            <div class="visual-overlay"></div>
+             <a class="register-logo">
+                <img src="logo-white.png" alt="HWPL Logo">
+            </a>
+            <div class="visual-content">
+                <span class="visual-label">
+                    HWPL PEACE EDUCATION
+                </span>
+                <h1>
+                    Энх тайвныг<br>
+                    хамтдаа бүтээе.
+                </h1>
+                <p>
+                    Энх тайвны боловсролоор дамжуулан
+                    өөрийгөө хөгжүүлж, энх тайван дэлхийг
+                     бүтээхэд хувь нэмрээ оруулаарай.
+                </p>
+                <div class="visual-decoration">
+                    <i class="fa-solid fa-earth-asia"></i>
+                    <span>Education for Peace</span>
+                </div>
+            </div>
+        </section>
+
+                                            <!-- RIGHT REGISTER PANEL -->
+
+        <section class="form-panel">
+            <div class="form-wrapper">
+                <!-- Login link -->
+                <div class="top-link">
+                    <span>Бүртгэлтэй юу?</span>
+                    <a href="login.html">
+                        Нэвтрэх
+                    </a>
+                </div>
+
+                <!-- Heading -->
+
+                <div class="form-heading">
+                    <span class="heading-label">
+                        JOIN OUR COMMUNITY
+                    </span>
+                    <h2>Бүртгэл үүсгэх</h2>
+                    <p>
+                        Доорх мэдээллийг үнэн зөв бөглөнө үү.
+                    </p>
+                </div>
+
+                <!-- =================REGISTRATION FORM============== -->
+
+                <form id="registerForm" novalidate>
+
+                    <!-- Last name -->
+
+                    <div class="form-group">
+                        <label for="lastName">
+                            Овог <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-user"></i>
+                            <input
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                placeholder="Овгоо бүтнээр нь оруулна уу"
+                                autocomplete="family-name"
+                                maxlength="100"
+                                required
+                            >
+                        </div>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <!-- First name -->
+
+                    <div class="form-group">
+                        <label for="firstName">
+                            Нэр <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-user"></i>
+                            <input
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                placeholder="Нэрээ бүтнээр нь оруулна уу"
+                                autocomplete="given-name"
+                                maxlength="100"
+                                required
+                            >
+                        </div>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <!-- Gender -->
+
+                    <div class="form-group">
+                        <label for="gender">
+                            Хүйс <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-venus-mars"></i>
+                            <select
+                                id="gender"
+                                name="gender"
+                                required
+                            >
+                                <option value="">
+                                    Хүйсээ сонгоно уу
+                                </option>
+                                <option value="male">
+                                    Эрэгтэй
+                                </option>
+                                <option value="female">
+                                    Эмэгтэй
+                                </option>
+                            </select>
+                        </div>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <!-- Phone -->
+
+                    <div class="form-group">
+                        <label for="phone">
+                            Утасны дугаар <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-phone"></i>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="Жишээ: 99112233"
+                                autocomplete="tel"
+                                inputmode="tel"
+                                maxlength="20"
+                                required
+                            >
+                        </div>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <!-- Date of birth -->
+
+                    <div class="form-group">
+                        <label for="birthDate">
+                            Төрсөн он, сар, өдөр
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-calendar"></i>
+                            <input
+                                type="date"
+                                id="birthDate"
+                                name="birthDate"
+                                autocomplete="bday"
+                                required
+                            >
+                        </div>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <!-- Email -->
+
+                    <div class="form-group">
+                        <label for="email">
+                            И-мэйл хаяг <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="example@email.com"
+                                autocomplete="email"
+                                maxlength="254"
+                                required
+                            >
+                        </div>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <!-- Occupation / status -->
+
+                    <div class="form-group">
+                        <label for="status">
+                            Таны одоогийн эрхэлж буй байдал
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <select
+                                id="status"
+                                name="status"
+                                required
+                            >
+                                <option value="">
+                                    Сонголтоо хийнэ үү
+                                </option>
+                                <option value="employee">
+                                    Ажилтан
+                                </option>
+                                <option value="university_student">
+                                    Оюутан
+                                </option>
+                                <option value="school_student">
+                                    Сурагч
+                                </option>
+                                <option value="self_employed">
+                                    Хувиараа хөдөлмөр эрхлэгч
+                                </option>
+                                <option value="other">
+                                    Бусад
+                                </option>
+                            </select>
+                        </div>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <!-- Organization / school -->
+
+                    <div class="form-group">
+                        <label for="organization">
+                            Харьяа байгууллага / сургууль
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-building-columns"></i>
+                            <input
+                                type="text"
+                                id="organization"
+                                name="organization"
+                                placeholder="Байгууллага эсвэл сургуулийн нэр"
+                                autocomplete="organization"
+                                maxlength="200"
+                                required
+                            >
+                        </div>
+                        <small class="field-hint">
+                            Сургуульд сурдаг бол сургуулийнхаа нэрийг бичнэ үү.
+                        </small>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <!-- Position / grade / course -->
+
+                    <div class="form-group">
+                        <label for="position">
+                            Албан тушаал / курс / анги
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <input
+                                type="text"
+                                id="position"
+                                name="position"
+                                placeholder="Жишээ: Менежер, 2-р курс, 11А анги"
+                                maxlength="150"
+                                required
+                            >
+                        </div>
+                        <small class="field-hint">
+                            Ажилтан бол албан тушаал, оюутан бол курс,
+                            сурагч бол ангиа бичнэ үү.
+                        </small>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <!-- Password -->
+
+                    <div class="form-group">
+                        <label for="password">
+                            Нууц үг <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Хамгийн багадаа 8 тэмдэгт"
+                                autocomplete="new-password"
+                                minlength="8"
+                                maxlength="128"
+                                required
+                            >
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                data-target="password"
+                                aria-label="Нууц үг харуулах"
+                            >
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <!-- Confirm password -->
+
+                    <div class="form-group">
+                        <label for="confirmPassword">
+                            Нууц үг давтах
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Нууц үгээ дахин оруулна уу"
+                                autocomplete="new-password"
+                                maxlength="128"
+                                required
+                            >
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                data-target="confirmPassword"
+                                aria-label="Нууц үг харуулах"
+                            >
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <!-- Terms and conditions -->
+
+                    <div class="terms-group">
+                        <input
+                            type="checkbox"
+                            id="agreeTerms"
+                            name="agreeTerms"
+                            required
+                        >
+                        <label for="agreeTerms">
+                            Би
+                            <a href="terms.html">
+                                үйлчилгээний нөхцөл
+                            </a>
+                            болон
+                            <a href="privacy.html">
+                                нууцлалын бодлого
+                            </a>-ыг
+                            зөвшөөрч байна.
+
+                        </label>
+                    </div>
+                    <small
+                        class="error-message terms-error"
+                        id="termsError"
+                    ></small>
+
+                    <!-- Status message -->
+
+                    <div
+                        id="formMessage"
+                        class="form-message"
+                        role="status"
+                        aria-live="polite"
+                    ></div>
+
+                    <!-- Submit button -->
+
+                    <button
+                        type="submit"
+                        class="register-button"
+                        id="registerButton"
+                    >
+                        <span>Бүртгэл үүсгэх</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <!-- Bottom information -->
+
+                <div class="form-bottom">
+                    <p>
+                        HWPL Peace Education
+                        <br>
+                        Peace begins with education.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Register JavaScript -->
+
+    <script src="register.js"></script>
 
 <div id="footer"></div>
 
 <script src="load.js"></script>
-
 </body>
 </html>
