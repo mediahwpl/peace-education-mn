@@ -1,3 +1,5 @@
+import { supabase } from "supabase.js";
+
 /* =====================================
    1. SELECT ELEMENTS
 ===================================== */
@@ -560,17 +562,10 @@ agreeTermsInput.addEventListener("change", function () {
    11. SUBMIT FORM
 ===================================== */
 
-registerForm.addEventListener("submit", function (event) {
-
-    // Stop the browser from reloading the page.
-
+registerForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-
-    // Validate all fields.
-
     if (!validateForm()) {
-
         showMessage(
             "Мэдээллээ шалгаж, шаардлагатай талбаруудыг бөглөнө үү.",
             "error"
@@ -581,29 +576,122 @@ registerForm.addEventListener("submit", function (event) {
         );
 
         if (firstInvalidInput) {
-
             firstInvalidInput.focus();
-
         }
 
         return;
-
     }
 
-
-    /*
-        FRONT-END VALIDATION ONLY
-
-        This version does not yet create a real user account.
-
-        The next step is to connect this form to Supabase Auth
-        and save the user's profile in a database.
-    */
-
-
-    showMessage(
-        "Мэдээлэл амжилттай шалгагдлаа. Бодит бүртгэл үүсгэхийн тулд системээ холбох шаардлагатай.",
-        "success"
+    const submitButton = registerForm.querySelector(
+        'button[type="submit"]'
     );
 
+    const originalButtonText = submitButton
+        ? submitButton.textContent
+        : "";
+
+    try {
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Бүртгэж байна...";
+        }
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        const surname =
+            document.getElementById("lastName").value.trim();
+
+        const firstName =
+            document.getElementById("firstName").value.trim();
+
+        const gender =
+            document.getElementById("gender").value;
+
+        const phone = phoneInput.value.trim();
+
+        const birthDate = birthDateInput.value;
+
+        const occupation =
+            document.getElementById("status").value;
+
+        const organization =
+            document.getElementById("organization").value.trim();
+
+        const position =
+            document.getElementById("position").value.trim();
+
+        // Supabase Auth-д хэрэглэгч бүртгэх
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+
+            options: {
+                emailRedirectTo:
+                    window.location.href.replace(
+                        /register\.html(?:\?.*)?$/,
+                        "login.html"
+                    ),
+
+                data: {
+                    surname: surname,
+                    first_name: firstName,
+                    gender: gender,
+                    phone: phone,
+                    birth_date: birthDate,
+                    occupation: occupation,
+                    organization: organization,
+                    position: position
+                }
+            }
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        if (!data.user) {
+            throw new Error(
+                "Хэрэглэгчийн бүртгэл үүссэн эсэхийг шалгаж чадсангүй."
+            );
+        }
+
+        showMessage(
+            "Бүртгэл амжилттай үүслээ. И-мэйл хаягаа шалгаж, баталгаажуулна уу.",
+            "success"
+        );
+
+        registerForm.reset();
+
+        birthDateInput.max = [
+            new Date().getFullYear(),
+            String(new Date().getMonth() + 1).padStart(2, "0"),
+            String(new Date().getDate()).padStart(2, "0")
+        ].join("-");
+
+    } catch (error) {
+        console.error("Registration error:", error);
+
+        let message =
+            "Бүртгэл үүсгэхэд алдаа гарлаа. Дахин оролдоно уу.";
+
+        if (error.message?.includes("already registered")) {
+            message =
+                "Энэ и-мэйл хаяг бүртгэлтэй байна. Нэвтрэх хэсгийг ашиглана уу.";
+        } else if (error.message?.includes("Password")) {
+            message =
+                "Нууц үгийн шаардлагыг шалгана уу.";
+        } else if (error.message?.includes("rate limit")) {
+            message =
+                "Хэт олон хүсэлт илгээсэн байна. Түр хүлээгээд дахин оролдоно уу.";
+        }
+
+        showMessage(message, "error");
+
+    } finally {
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
+        }
+    }
 });
