@@ -25,6 +25,142 @@
         section {
             scroll-margin-top: 120px;
         }
+
+:root {
+    --primary: #3480e2;
+    --primary-dark: #2466bd;
+    --navy: #1a2036;
+    --text: #252b3b;
+    --muted: #7c8496;
+    --border: #e1e6ef;
+    --background: #f5f8fd;
+    --white: #ffffff;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+
+                        /* =============MAIN LAYOUt============== */
+
+.Online_course-page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+
+                        /* =================LEFT VISUAL PANEL============ */
+
+.Online_course-visual {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px 8%;
+    color: var(--white);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(26, 32, 54, 0.96),
+            rgba(52, 128, 226, 0.88)
+        ), url("fg.jpg");
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+                                    /* Background decoration */
+
+.Online_course-visual::before {
+    content: "";
+    position: absolute;
+
+    width: 440px;
+    height: 440px;
+
+    right: -180px;
+    bottom: -160px;
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 50%;
+}
+
+.Online_course-visual::after {
+    content: "";
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    right: -110px;
+    bottom: -90px;
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 50%;
+}
+
+
+                                        /* Logo */
+
+.Online_course-logo img {
+    width: 150px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+
+                                /* Visual content */
+
+.Online_course-visual-content {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: auto 0;
+    padding: 60px 0;
+}
+
+.Online_course-visual-label {
+    display: inline-block;
+    margin-bottom: 24px;
+    padding: 9px 14px;
+    border: 1px solid rgba(250, 248, 248, 0.3);
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.Online_course-visual-content h1 {
+    margin-bottom: 24px;
+    font-size: clamp(36px, 4vw, 58px);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.Online_course-visual-content p {
+    max-width: 440px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 16px;
+    line-height: 1.9;
+}
+
+.Online_course-visual-decoration {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 42px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+}
+
+.Online_course-visual-decoration i {
+    font-size: 25px;
+}
+
                                          /* ==== registration Section ==== */ 
         #registrations{
             padding:123px 60px;
