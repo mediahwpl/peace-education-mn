@@ -1,5 +1,7 @@
 import { supabase } from "./supabase.js";
 
+console.log("LOGIN.JS АЖИЛЛАЖ БАЙНА");
+
 document.addEventListener("DOMContentLoaded", function () {
 
     // ========================================
