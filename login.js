@@ -1,15 +1,53 @@
+import { supabase } from "./supabase.js";
+
 document.addEventListener("DOMContentLoaded", function () {
-    // Нууц үг харуулах / нуух
+
+    // ========================================
+    // 1. HTML элементүүдийг сонгох
+    // ========================================
+
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
     const togglePassword = document.getElementById("togglePassword");
+    const loginMessage = document.getElementById("loginMessage");
+    const loginButton = loginForm.querySelector(
+        'button[type="submit"]'
+    );
+
+
+    // ========================================
+    // 2. Мэдээлэл харуулах функц
+    // ========================================
+
+    function showMessage(message, type = "error") {
+
+        loginMessage.textContent = message;
+
+        loginMessage.className =
+            "form-message is-visible";
+
+        if (type === "success") {
+            loginMessage.classList.add("is-success");
+        } else {
+            loginMessage.classList.add("is-error");
+        }
+    }
+
+
+    // ========================================
+    // 3. Нууц үг харуулах / нуух
+    // ========================================
 
     if (passwordInput && togglePassword) {
 
         togglePassword.addEventListener("click", function () {
 
-            const isPassword = passwordInput.type === "password";
+            const isPassword =
+                passwordInput.type === "password";
 
-            passwordInput.type = isPassword ? "text" : "password";
+            passwordInput.type =
+                isPassword ? "text" : "password";
 
             togglePassword.innerHTML = isPassword
                 ? '<i class="fa-regular fa-eye-slash"></i>'
@@ -32,24 +70,112 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // Нэвтрэх формын түр шалгалт
-    const loginForm = document.getElementById("loginForm");
-    const loginMessage = document.getElementById("loginMessage");
+    // ========================================
+    // 4. Нэвтрэх форм
+    // ========================================
 
-    if (loginForm && loginMessage) {
+    loginForm.addEventListener("submit", async function (event) {
 
-        loginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-            event.preventDefault();
+        // Хэрэглэгчийн оруулсан мэдээлэл
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
 
-            loginMessage.textContent =
-                "Нэвтрэх систем хараахан холбогдоогүй байна. Дараагийн алхамд Supabase-тай холбоно.";
+        // Өмнөх мэдэгдлийг арилгах
+        loginMessage.textContent = "";
+        loginMessage.className = "form-message";
 
-            loginMessage.className =
-                "form-message is-visible";
+        // Хоосон эсэхийг шалгах
+        if (!email || !password) {
 
-        });
+            showMessage(
+                "И-мэйл болон нууц үгээ оруулна уу."
+            );
 
-    }
+            return;
+        }
+
+        // Товчийг түр идэвхгүй болгох
+        loginButton.disabled = true;
+        loginButton.querySelector("span").textContent =
+            "Нэвтэрч байна...";
+
+        try {
+
+            // Supabase Authentication
+            const { data, error } =
+                await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+            // Supabase алдаа буцаасан бол
+            if (error) {
+                throw error;
+            }
+
+            // Хэрэглэгчийн мэдээлэл шалгах
+            if (!data.user) {
+
+                throw new Error(
+                    "Хэрэглэгчийн мэдээлэл олдсонгүй."
+                );
+            }
+
+            // Амжилттай нэвтэрсэн
+            showMessage(
+                "Амжилттай нэвтэрлээ. Түр хүлээнэ үү...",
+                "success"
+            );
+
+            // Dashboard руу шилжих
+            window.location.href = "dashboard.html";
+
+        } catch (error) {
+
+            console.error("Login error:", error);
+
+            // Алдааны мэдээлэл
+            if (
+                error.message?.toLowerCase().includes(
+                    "invalid login credentials"
+                )
+            ) {
+
+                showMessage(
+                    "И-мэйл эсвэл нууц үг буруу байна."
+                );
+
+            } else if (
+                error.message?.toLowerCase().includes(
+                    "email not confirmed"
+                )
+            ) {
+
+                showMessage(
+                    "И-мэйл хаягаа баталгаажуулна уу."
+                );
+
+            } else {
+
+                showMessage(
+                    "Нэвтрэх үед алдаа гарлаа. " +
+                    "Мэдээллээ шалгаад дахин оролдоно уу."
+                );
+
+            }
+
+        } finally {
+
+            // Нэвтрэх товчийг буцааж идэвхжүүлэх
+            loginButton.disabled = false;
+
+            loginButton.querySelector("span").textContent =
+                "Нэвтрэх";
+
+        }
+
+    });
 
 });
