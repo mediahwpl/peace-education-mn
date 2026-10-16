@@ -1,7 +1,7 @@
 /* ========================================
    HWPL PEACE EDUCATION - DASHBOARD JS
 ======================================== */
-
+import { supabase } from "./supabase.js";
 "use strict";
 
 
@@ -1273,10 +1273,10 @@ function showToast(message) {
 
 
 // ========================================
-// 17. DEMO LOGIN / LOGOUT
+// 17. LOGIN / LOGOUT
 // ========================================
 
-function handleLogout() {
+async function handleLogout() {
     const confirmed = window.confirm(
         "Та системээс гарахдаа итгэлтэй байна уу?"
     );
@@ -1285,11 +1285,29 @@ function handleLogout() {
         return;
     }
 
-    // Бодит системд Supabase Auth signOut() ашиглана.
+    const logoutButton =
+        document.getElementById("logoutButton");
 
-    showToast(
-        "Гарах үйлдлийг бодит нэвтрэх системтэй холбох шаардлагатай."
-    );
+    logoutButton.disabled = true;
+
+    try {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) {
+            throw error;
+        }
+
+        window.location.replace("login.html");
+
+    } catch (error) {
+        console.error("Гарахад алдаа гарлаа:", error);
+
+        showToast(
+            "Системээс гарахад алдаа гарлаа. Дахин оролдоно уу."
+        );
+
+        logoutButton.disabled = false;
+    }
 }
 
 
@@ -1407,6 +1425,86 @@ function bindEvents() {
         });
 }
 
+// ========================================
+// SUPABASE: SESSION AND USER PROFILE
+// ========================================
+
+async function initializeAuthenticatedDashboard() {
+    // 1. Нэвтэрсэн хэрэглэгч байгаа эсэхийг шалгах
+    const { data: sessionData, error: sessionError } =
+        await supabase.auth.getSession();
+
+    if (sessionError) {
+        console.error("Session шалгахад алдаа:", sessionError);
+        window.location.replace("login.html");
+        return;
+    }
+
+    const session = sessionData.session;
+
+    // Нэвтрээгүй бол login хуудас руу буцаана
+    if (!session) {
+        window.location.replace("login.html");
+        return;
+    }
+
+    const user = session.user;
+
+    // 2. profiles хүснэгтээс тухайн хэрэглэгчийн мэдээлэл авах
+    const { data: profile, error: profileError } =
+        await supabase
+            .from("profiles")
+            .select(
+                "surname, first_name, gender, phone, birth_date, email, occupation, organization, position"
+            )
+            .eq("id", user.id)
+            .maybeSingle();
+
+    if (profileError) {
+        console.error("Профайл уншихад алдаа:", profileError);
+        showToast("Профайлын мэдээллийг уншиж чадсангүй.");
+    }
+
+    // 3. Supabase-аас авсан мэдээллийг dashboard-д харуулах
+    const firstName =
+        profile?.first_name ||
+        user.user_metadata?.first_name ||
+        "Суралцагч";
+
+    const surname =
+        profile?.surname ||
+        user.user_metadata?.surname ||
+        "";
+
+    const fullName = `${surname} ${firstName}`.trim();
+
+    state.user = {
+        fullName: fullName || "Суралцагч",
+        email: profile?.email || user.email || "",
+        userType: "individual",
+        organization: profile?.organization || "",
+        occupation: profile?.occupation || "",
+        position: profile?.position || ""
+    };
+
+    renderUserInfo();
+
+    // Dashboard-ийн одоогийн интерфэйсийг ажиллуулах
+    document.getElementById("currentYear").textContent =
+        new Date().getFullYear();
+
+    renderCourses();
+    renderAssignments();
+    renderStatistics();
+    bindEvents();
+
+    const initialSection =
+        window.location.hash.replace("#", "");
+
+    if (pageTitles[initialSection]) {
+        showSection(initialSection);
+    }
+}
 
 // ========================================
 // 19. INITIALIZE
@@ -1437,5 +1535,18 @@ function initDashboard() {
 
 document.addEventListener(
     "DOMContentLoaded",
-    initDashboard
+    async function () {
+        try {
+            await initializeAuthenticatedDashboard();
+        } catch (error) {
+            console.error(
+                "Dashboard эхлүүлэхэд алдаа гарлаа:",
+                error
+            );
+
+            showToast(
+                "Dashboard ачаалахад алдаа гарлаа. Дахин нэвтэрнэ үү."
+            );
+        }
+    }
 );
