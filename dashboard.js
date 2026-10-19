@@ -1,7 +1,9 @@
 /* ========================================
    HWPL PEACE EDUCATION - DASHBOARD JS
 ======================================== */
+
 import { supabase } from "./supabase.js";
+
 "use strict";
 
 
@@ -9,7 +11,7 @@ import { supabase } from "./supabase.js";
 // 1. COURSE DATA
 // ========================================
 
-// Эдгээр нэрсийг албан ёсны 12 хичээлийн нэрээр солино.
+// Энх тайвны боловсролын 12 хичээл
 
 const lessons = [
     {
@@ -79,11 +81,16 @@ const lessons = [
 // 2. STORAGE
 // ========================================
 
-// DEMO MODE:
-// Одоогоор жишээ мэдээллийг localStorage-д хадгална.
-// Бодит системд Supabase ашиглах шаардлагатай.
+// localStorage нь түр нөөц.
+// Үндсэн ахиц Supabase-д хадгалагдана.
 
 const STORAGE_KEY = "hwpl_dashboard_demo_v1";
+
+let currentUserId = null;
+
+let progressSyncTimeout = null;
+
+let isLoadingProgress = false;
 
 let activeLessonId = null;
 
@@ -91,8 +98,10 @@ let toastTimeout = null;
 
 let currentFilter = "all";
 
-let isDemoMode = true;
 
+// ========================================
+// 2.1. LOCAL STORAGE-ООС МЭДЭЭЛЭЛ УНШИХ
+// ========================================
 
 function loadState() {
     try {
@@ -110,7 +119,10 @@ function loadState() {
             }
         }
     } catch (error) {
-        console.error("Мэдээлэл уншихад алдаа гарлаа:", error);
+        console.error(
+            "Мэдээлэл уншихад алдаа гарлаа:",
+            error
+        );
     }
 
     return {
@@ -128,33 +140,192 @@ function loadState() {
 let state = loadState();
 
 
-function saveState() {
-    if (!isDemoMode) {
-        return;
-    }
+// ========================================
+// 2.2. МЭДЭЭЛЭЛ ХАДГАЛАХ
+// ========================================
 
+function saveState() {
+
+    // Браузерт түр нөөцөлнө.
     try {
         localStorage.setItem(
             STORAGE_KEY,
             JSON.stringify(state)
         );
     } catch (error) {
-        console.error("Мэдээлэл хадгалахад алдаа гарлаа:", error);
-
-        showToast(
-            "Мэдээллийг браузерт хадгалж чадсангүй."
+        console.error(
+            "localStorage хадгалалтын алдаа:",
+            error
         );
+    }
+
+    // Supabase-аас мэдээлэл ачаалж байх үед
+    // мэдээллийг буцааж бичихгүй.
+
+    if (!currentUserId || isLoadingProgress) {
+        return;
+    }
+
+    clearTimeout(progressSyncTimeout);
+
+    progressSyncTimeout = setTimeout(() => {
+
+        syncProgressToSupabase().catch(error => {
+
+            console.error(
+                "Ахиц Supabase-д хадгалахад алдаа:",
+                error
+            );
+
+            showToast(
+                "Ахиц хадгалагдсангүй. Интернэт болон Supabase тохиргоог шалгана уу."
+            );
+        });
+
+    }, 2500);
+}
+
+
+// ========================================
+// 2.3. АХИЦЫГ SUPABASE-Д ХАДГАЛАХ
+// ========================================
+
+async function syncProgressToSupabase() {
+
+    if (!currentUserId || isLoadingProgress) {
+        return;
+    }
+
+    const rows = lessons.map(lesson => {
+
+        const item = getLessonState(lesson.id);
+
+        return {
+            user_id: currentUserId,
+
+            lesson_id: lesson.id,
+
+            video_progress: Math.min(
+                100,
+                Math.max(
+                    0,
+                    Number(item.videoProgress) || 0
+                )
+            ),
+
+            video_completed:
+                item.videoCompleted === true,
+
+            assignment_submitted:
+                item.assignmentSubmitted === true,
+
+            assignment_name:
+                item.assignmentName || null,
+
+            assignment_size:
+                Number(item.assignmentSize) || 0,
+
+            updated_at: new Date().toISOString()
+        };
+    });
+
+    const { error } = await supabase
+        .from("course_progress")
+        .upsert(
+            rows,
+            {
+                onConflict: "user_id,lesson_id"
+            }
+        );
+
+    if (error) {
+        throw error;
     }
 }
 
 
+// ========================================
+// 2.4. SUPABASE-ААС АХИЦ УНШИХ
+// ========================================
+
+async function loadProgressFromSupabase(userId) {
+
+    isLoadingProgress = true;
+
+    try {
+
+        const { data, error } = await supabase
+            .from("course_progress")
+            .select(
+                "lesson_id, video_progress, video_completed, assignment_submitted, assignment_name, assignment_size"
+            )
+            .eq("user_id", userId);
+
+        if (error) {
+            throw error;
+        }
+
+        // Supabase дахь мэдээллийг үндсэн мэдээлэл гэж үзнэ.
+
+        state.lessons = {};
+
+        (data || []).forEach(row => {
+
+            state.lessons[row.lesson_id] = {
+
+                videoProgress:
+                    Number(row.video_progress) || 0,
+
+                videoCompleted:
+                    row.video_completed === true,
+
+                assignmentSubmitted:
+                    row.assignment_submitted === true,
+
+                assignmentName:
+                    row.assignment_name || "",
+
+                assignmentSize:
+                    Number(row.assignment_size) || 0
+            };
+        });
+
+        // Бүх 12 хичээлийн төлөвийг үүсгэнэ.
+
+        lessons.forEach(lesson => {
+            getLessonState(lesson.id);
+        });
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(state)
+        );
+
+    } finally {
+
+        isLoadingProgress = false;
+    }
+}
+
+
+// ========================================
+// 2.5. ХИЧЭЭЛИЙН ТӨЛӨВ ҮҮСГЭХ
+// ========================================
+
 function getLessonState(lessonId) {
+
     if (!state.lessons[lessonId]) {
+
         state.lessons[lessonId] = {
+
             videoProgress: 0,
+
             videoCompleted: false,
+
             assignmentSubmitted: false,
+
             assignmentName: "",
+
             assignmentSize: 0
         };
     }
@@ -167,11 +338,10 @@ function getLessonState(lessonId) {
 // 3. USER INFORMATION
 // ========================================
 
-// Бүртгэлийн мэдээллийг түр дамжуулах шаардлагатай бол
-// өмнөх register/login кодтой холбож болно.
-// Бодит системд хэрэглэгчийг Supabase-аас уншина.
+// Хэрэглэгчийн нэрийн эхний үсгүүдийг гаргана.
 
 function getUserInitials(fullName) {
+
     return String(fullName || "С")
         .trim()
         .split(/\s+/)
@@ -183,19 +353,25 @@ function getUserInitials(fullName) {
 }
 
 
+// ========================================
+// 3.1. ХЭРЭГЛЭГЧИЙН МЭДЭЭЛЛИЙГ ХАРУУЛАХ
+// ========================================
+
 function renderUserInfo() {
+
     const user = state.user || {};
 
     const fullName =
-        user.fullName ||
-        "Суралцагч";
+        user.fullName || "Суралцагч";
 
-    const initials = getUserInitials(fullName);
+    const initials =
+        getUserInitials(fullName);
 
     const userType =
         user.userType === "organization"
             ? "Байгууллагын суралцагч"
             : "Хувь суралцагч";
+
 
     document.getElementById("userName").textContent =
         fullName;
@@ -221,15 +397,23 @@ function renderUserInfo() {
     document.getElementById("profileType").textContent =
         userType;
 
+
     const organizationRow =
-        document.getElementById("organizationProfileRow");
+        document.getElementById(
+            "organizationProfileRow"
+        );
 
     if (user.userType === "organization") {
+
         organizationRow.hidden = false;
 
-        document.getElementById("profileOrganization").textContent =
+        document.getElementById(
+            "profileOrganization"
+        ).textContent =
             user.organization || "Мэдээлэл оруулаагүй";
+
     } else {
+
         organizationRow.hidden = true;
     }
 }
@@ -245,6 +429,7 @@ function renderUserInfo() {
 // 3. Дараагийн хичээл нээгдэнэ.
 
 function isLessonCompleted(lessonId) {
+
     const lesson = getLessonState(lessonId);
 
     return (
@@ -255,7 +440,12 @@ function isLessonCompleted(lessonId) {
 }
 
 
+// ========================================
+// 4.1. ХИЧЭЭЛ НЭЭГДСЭН ЭСЭХ
+// ========================================
+
 function isLessonUnlocked(lessonId) {
+
     if (lessonId === 1) {
         return true;
     }
@@ -264,7 +454,12 @@ function isLessonUnlocked(lessonId) {
 }
 
 
+// ========================================
+// 4.2. ХИЧЭЭЛИЙН ТӨЛӨВ ТОДОРХОЙЛОХ
+// ========================================
+
 function getLessonStatus(lessonId) {
+
     const lesson = getLessonState(lessonId);
 
     if (isLessonCompleted(lessonId)) {
@@ -286,11 +481,20 @@ function getLessonStatus(lessonId) {
 }
 
 
+// ========================================
+// 4.3. ТӨЛӨВИЙГ МОНГОЛООР ХАРУУЛАХ
+// ========================================
+
 function getLessonStatusText(status) {
+
     const labels = {
+
         completed: "Дууссан",
+
         locked: "Түгжээтэй",
+
         "in-progress": "Үргэлжилж буй",
+
         available: "Эхлэх боломжтой"
     };
 
@@ -302,18 +506,29 @@ function getLessonStatusText(status) {
 // 5. PROGRESS CALCULATION
 // ========================================
 
+// Сургалтын нийт ахицыг тооцоолно.
+
 function getStatistics() {
+
     let completed = 0;
+
     let inProgress = 0;
+
     let unlocked = 0;
+
     let submitted = 0;
 
     let totalVideoProgress = 0;
 
-    lessons.forEach(lesson => {
-        const lessonState = getLessonState(lesson.id);
 
-        const status = getLessonStatus(lesson.id);
+    lessons.forEach(lesson => {
+
+        const lessonState =
+            getLessonState(lesson.id);
+
+        const status =
+            getLessonStatus(lesson.id);
+
 
         if (status === "completed") {
             completed++;
@@ -331,20 +546,25 @@ function getStatistics() {
             submitted++;
         }
 
+
         totalVideoProgress += Math.min(
             100,
-            Math.max(0, lessonState.videoProgress)
+            Math.max(
+                0,
+                lessonState.videoProgress
+            )
         );
     });
 
+
     // Нийт ахиц:
-    // 50% видео үзсэн ахиц + 50% даалгаврын гүйцэтгэл.
-    // Хичээл бүрийн гүйцэтгэлд адил жин өгнө.
+    // 50% видео үзсэн ахиц
+    // 50% даалгаврын гүйцэтгэл.
 
     const overallProgress = Math.round(
         (
             totalVideoProgress / lessons.length +
-            (submitted / lessons.length) * 100
+    (submitted / lessons.length) * 100
         ) / 2
     );
 
@@ -718,7 +938,7 @@ function openLesson(lessonId) {
 
     const video = document.getElementById("lessonVideo");
 
-    // Хэрэв видео URL тохируулсан бол энд src онооно.
+    // Видео үзүүлэх бол lesson.videoUrl утга онооно.
     // Жишээ:
     // lesson.videoUrl = "videos/lesson-01.mp4";
 
@@ -780,9 +1000,6 @@ function closeLessonModal() {
 // 9. VIDEO PROGRESS
 // ========================================
 
-// Үзсэн хугацааг хадгална.
-// Хичээл бүрэн дуусахын тулд видеог 100% үзсэн байх ёстой.
-
 function updateVideoProgress() {
     if (!activeLessonId) {
         return;
@@ -837,12 +1054,8 @@ function updateVideoProgress() {
 // 10. ASSIGNMENT UPLOAD
 // ========================================
 
-// ЧУХАЛ:
-// Доорх хувилбар зөвхөн файл сонгосныг бүртгэнэ.
-// Файлыг серверт илгээхгүй.
-// localStorage-д файл өөрөө биш, нэр болон хэмжээ хадгалагдана.
-//
-// Бодит хувилбарт Supabase Storage ашиглана.
+// Одоогийн хувилбар зөвхөн файлын нэр, хэмжээг хадгална.
+// Файлыг бодитоор Supabase Storage руу upload хийхгүй.
 
 function handleAssignmentSubmit(event) {
     event.preventDefault();
@@ -919,9 +1132,6 @@ function handleAssignmentSubmit(event) {
         return;
     }
 
-    // Demo хувилбарын файл хэмжээний хязгаар.
-    // Сервер дээр давхар шалгах шаардлагатай.
-
     const maxFileSize = 10 * 1024 * 1024;
 
     if (file.size > maxFileSize) {
@@ -933,8 +1143,8 @@ function handleAssignmentSubmit(event) {
         return;
     }
 
-    // Энэ нь бодит upload биш.
-    // Зөвхөн интерфэйс турших зорилготой.
+    // ТУРШИЛТЫН БҮРТГЭЛ:
+    // Энд файл өөрөө серверт upload хийгдэхгүй.
 
     lessonState.assignmentSubmitted = true;
 
@@ -975,8 +1185,6 @@ function showAssignmentMessage(message, type) {
 
     element.className = `form-message ${type}`;
 }
-
-
 // ========================================
 // 11. ASSIGNMENT TABLE
 // ========================================
@@ -1132,9 +1340,7 @@ function downloadDemoCertificate() {
         return;
     }
 
-    // Энэ нь жинхэнэ сертификат биш.
-    // Сертификатын PDF-ийг серверийн баталгаажуулалттайгаар
-    // үүсгэх шаардлагатай.
+    // Одоогоор PDF үүсгэх функц холбогдоогүй.
 
     showToast(
         "Сертификатын PDF үүсгэх функцийг Supabase-тай холбох шаардлагатай."
@@ -1270,283 +1476,294 @@ function showToast(message) {
         toast.classList.remove("show");
     }, 3500);
 }
-
-
 // ========================================
-// 17. LOGIN / LOGOUT
+// 11. ASSIGNMENT TABLE
 // ========================================
 
-async function handleLogout() {
-    const confirmed = window.confirm(
-        "Та системээс гарахдаа итгэлтэй байна уу?"
-    );
+function renderAssignments() {
+    const tbody =
+        document.getElementById("assignmentsTableBody");
 
-    if (!confirmed) {
-        return;
-    }
+    tbody.replaceChildren();
 
-    const logoutButton =
-        document.getElementById("logoutButton");
+    lessons.forEach(lesson => {
+        const lessonState = getLessonState(lesson.id);
 
-    logoutButton.disabled = true;
+        const status = getLessonStatus(lesson.id);
 
-    try {
-        const { error } = await supabase.auth.signOut();
+        const row = document.createElement("tr");
 
-        if (error) {
-            throw error;
+        const lessonCell = document.createElement("td");
+
+        lessonCell.textContent =
+            `${String(lesson.id).padStart(2, "0")}. ${lesson.title}`;
+
+        const videoCell = document.createElement("td");
+
+        const videoStatus = document.createElement("span");
+
+        videoStatus.className =
+            "table-status " +
+            (
+                lessonState.videoProgress >= 100
+                    ? "completed"
+                    : status === "locked"
+                        ? "locked"
+                        : "pending"
+            );
+
+        videoStatus.textContent =
+            `${Math.round(lessonState.videoProgress)}%`;
+
+        videoCell.appendChild(videoStatus);
+
+
+        const assignmentCell = document.createElement("td");
+
+        const assignmentStatus = document.createElement("span");
+
+        assignmentStatus.className =
+            "table-status " +
+            (
+                lessonState.assignmentSubmitted
+                    ? "completed"
+                    : status === "locked"
+                        ? "locked"
+                        : "pending"
+            );
+
+        assignmentStatus.textContent =
+            lessonState.assignmentSubmitted
+                ? "Илгээсэн"
+                : status === "locked"
+                    ? "Түгжээтэй"
+                    : "Хүлээгдэж буй";
+
+        assignmentCell.appendChild(assignmentStatus);
+
+
+        const actionCell = document.createElement("td");
+
+        const button = document.createElement("button");
+
+        button.className = "table-action";
+
+        button.type = "button";
+
+        button.textContent =
+            status === "locked"
+                ? "Түгжээтэй"
+                : "Нээх";
+
+        button.disabled = status === "locked";
+
+        if (status !== "locked") {
+            button.addEventListener("click", () => {
+                openLesson(lesson.id);
+            });
         }
 
-        window.location.replace("login.html");
+        actionCell.appendChild(button);
 
-    } catch (error) {
-        console.error("Гарахад алдаа гарлаа:", error);
-
-        showToast(
-            "Системээс гарахад алдаа гарлаа. Дахин оролдоно уу."
+        row.append(
+            lessonCell,
+            videoCell,
+            assignmentCell,
+            actionCell
         );
 
-        logoutButton.disabled = false;
-    }
+        tbody.appendChild(row);
+    });
 }
 
 
 // ========================================
-// 18. EVENT LISTENERS
+// 12. CERTIFICATE
 // ========================================
 
-function bindEvents() {
-    document.querySelectorAll(".sidebar-nav").forEach(nav => {
-        nav.addEventListener("click", handleNavigation);
-    });
+function renderCertificate() {
+    const stats = getStatistics();
 
-    document.getElementById("menuToggle")
-        .addEventListener("click", openSidebar);
+    const eligible =
+        stats.completed === lessons.length &&
+        stats.submitted === lessons.length;
 
-    document.getElementById("sidebarClose")
-        .addEventListener("click", closeSidebar);
+    const downloadButton =
+        document.getElementById("downloadCertificateButton");
 
-    document.getElementById("sidebarOverlay")
-        .addEventListener("click", closeSidebar);
+    downloadButton.disabled = !eligible;
 
-    document.getElementById("viewAllCourses")
-        .addEventListener("click", () => {
-            showSection("courses");
-        });
+    document.getElementById("certificateHeading").textContent =
+        eligible
+            ? "Баяр хүргэе! Та сургалтаа дуусгалаа."
+            : "Таны амжилтын аялал үргэлжилж байна";
 
-    document.getElementById("viewCertificateButton")
-        .addEventListener("click", () => {
-            showSection("certificate");
-        });
+    document.getElementById("certificateDescription").textContent =
+        eligible
+            ? "Та бүх хичээл болон даалгаврыг дуусгасан байна."
+            : `Үлдсэн хичээл: ${lessons.length - stats.completed}. ` +
+              `Илгээх шаардлагатай даалгавар: ${lessons.length - stats.submitted}.`;
 
-    document.getElementById("continueLessonButton")
-        .addEventListener("click", () => {
-            const nextLesson = lessons.find(lesson => {
-                return !isLessonCompleted(lesson.id);
-            });
+    document.getElementById("certificateNote").textContent =
+        eligible
+            ? "Сертификат үүсгэхэд бэлэн."
+            : "Бүх 12 хичээлийг 100% үзэж, даалгавраа илгээсний дараа нээгдэнэ.";
 
-            if (!nextLesson) {
-                showSection("certificate");
+    const viewButton =
+        document.getElementById("viewCertificateButton");
 
-                return;
-            }
-
-            if (!isLessonUnlocked(nextLesson.id)) {
-                showToast(
-                    "Өмнөх хичээлийн видео болон даалгаврыг дуусгана уу."
-                );
-
-                return;
-            }
-
-            openLesson(nextLesson.id);
-        });
-
-    document.getElementById("courseModal")
-        .addEventListener("click", event => {
-            if (
-                event.target.matches("[data-close-modal]") ||
-                event.target.closest("#modalClose")
-            ) {
-                closeLessonModal();
-            }
-        });
-
-    document.addEventListener("keydown", event => {
-        if (
-            event.key === "Escape" &&
-            !document.getElementById("courseModal").hidden
-        ) {
-            closeLessonModal();
-        }
-    });
-
-    document.getElementById("lessonVideo")
-        .addEventListener("timeupdate", updateVideoProgress);
-
-    document.getElementById("lessonVideo")
-        .addEventListener("ended", updateVideoProgress);
-
-    document.getElementById("assignmentForm")
-        .addEventListener("submit", handleAssignmentSubmit);
-
-    document.getElementById("assignmentFile")
-        .addEventListener("change", event => {
-            const file = event.target.files[0];
-
-            document.getElementById("selectedFileName").textContent =
-                file
-                    ? `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`
-                    : "";
-        });
-
-    document.getElementById("allCoursesGrid")
-        .addEventListener("click", handleCourseFilter);
-
-    document.querySelector(".course-filter")
-        .addEventListener("click", handleCourseFilter);
-
-    document.getElementById("downloadCertificateButton")
-        .addEventListener("click", downloadDemoCertificate);
-
-    document.getElementById("logoutButton")
-        .addEventListener("click", handleLogout);
-
-    document.getElementById("notificationButton")
-        .addEventListener("click", () => {
-            showToast(
-                "Одоогоор шинэ мэдэгдэл алга."
-            );
-        });
-
-    document.getElementById("userMenu")
-        .addEventListener("click", () => {
-            showSection("profile");
-        });
+    viewButton.disabled = !eligible;
 }
 
-// ========================================
-// SUPABASE: SESSION AND USER PROFILE
-// ========================================
 
-async function initializeAuthenticatedDashboard() {
-    // 1. Нэвтэрсэн хэрэглэгч байгаа эсэхийг шалгах
-    const { data: sessionData, error: sessionError } =
-        await supabase.auth.getSession();
+function downloadDemoCertificate() {
+    const stats = getStatistics();
 
-    if (sessionError) {
-        console.error("Session шалгахад алдаа:", sessionError);
-        window.location.replace("login.html");
+    const eligible =
+        stats.completed === lessons.length &&
+        stats.submitted === lessons.length;
+
+    if (!eligible) {
+        showToast(
+            "Сертификат авахын тулд бүх хичээлийг дуусгана уу."
+        );
+
         return;
     }
 
-    const session = sessionData.session;
+    // Одоогоор PDF үүсгэх функц холбогдоогүй.
 
-    // Нэвтрээгүй бол login хуудас руу буцаана
-    if (!session) {
-        window.location.replace("login.html");
+    showToast(
+        "Сертификатын PDF үүсгэх функцийг Supabase-тай холбох шаардлагатай."
+    );
+}
+
+
+// ========================================
+// 13. PAGE NAVIGATION
+// ========================================
+
+const pageTitles = {
+    overview: "Хянах самбар",
+    courses: "Миний хичээлүүд",
+    assignments: "Миний даалгавар",
+    certificate: "Сертификат",
+    profile: "Миний профайл"
+};
+
+
+function showSection(sectionId) {
+    const target = document.getElementById(sectionId);
+
+    if (!target || !target.classList.contains("page-section")) {
         return;
     }
 
-    const user = session.user;
+    document.querySelectorAll(".page-section").forEach(section => {
+        section.classList.toggle(
+            "active",
+            section.id === sectionId
+        );
+    });
 
-    // 2. profiles хүснэгтээс тухайн хэрэглэгчийн мэдээлэл авах
-    const { data: profile, error: profileError } =
-        await supabase
-            .from("profiles")
-            .select(
-                "surname, first_name, gender, phone, birth_date, email, occupation, organization, position"
-            )
-            .eq("id", user.id)
-            .maybeSingle();
+    document.querySelectorAll(".nav-link[data-section]").forEach(link => {
+        link.classList.toggle(
+            "active",
+            link.dataset.section === sectionId
+        );
+    });
 
-    if (profileError) {
-        console.error("Профайл уншихад алдаа:", profileError);
-        showToast("Профайлын мэдээллийг уншиж чадсангүй.");
-    }
+    document.getElementById("pageTitle").textContent =
+        pageTitles[sectionId] || "Хянах самбар";
 
-    // 3. Supabase-аас авсан мэдээллийг dashboard-д харуулах
-    const firstName =
-        profile?.first_name ||
-        user.user_metadata?.first_name ||
-        "Суралцагч";
+    closeSidebar();
 
-    const surname =
-        profile?.surname ||
-        user.user_metadata?.surname ||
-        "";
-
-    const fullName = `${surname} ${firstName}`.trim();
-
-    state.user = {
-        fullName: fullName || "Суралцагч",
-        email: profile?.email || user.email || "",
-        userType: "individual",
-        organization: profile?.organization || "",
-        occupation: profile?.occupation || "",
-        position: profile?.position || ""
-    };
-
-    renderUserInfo();
-
-    // Dashboard-ийн одоогийн интерфэйсийг ажиллуулах
-    document.getElementById("currentYear").textContent =
-        new Date().getFullYear();
-
-    renderCourses();
-    renderAssignments();
-    renderStatistics();
-    bindEvents();
-
-    const initialSection =
-        window.location.hash.replace("#", "");
-
-    if (pageTitles[initialSection]) {
-        showSection(initialSection);
-    }
-}
-
-// ========================================
-// 19. INITIALIZE
-// ========================================
-
-function initDashboard() {
-    document.getElementById("currentYear").textContent =
-        new Date().getFullYear();
-
-    renderUserInfo();
-
-    renderCourses();
-
-    renderAssignments();
-
-    renderStatistics();
-
-    bindEvents();
-
-    const initialSection =
-        window.location.hash.replace("#", "");
-
-    if (pageTitles[initialSection]) {
-        showSection(initialSection);
-    }
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
 
-document.addEventListener(
-    "DOMContentLoaded",
-    async function () {
-        try {
-            await initializeAuthenticatedDashboard();
-        } catch (error) {
-            console.error(
-                "Dashboard эхлүүлэхэд алдаа гарлаа:",
-                error
-            );
+function handleNavigation(event) {
+    const link = event.target.closest(
+        ".nav-link[data-section]"
+    );
 
-            showToast(
-                "Dashboard ачаалахад алдаа гарлаа. Дахин нэвтэрнэ үү."
-            );
-        }
+    if (!link) {
+        return;
     }
-);
+
+    event.preventDefault();
+
+    const sectionId = link.dataset.section;
+
+    showSection(sectionId);
+
+    history.replaceState(
+        null,
+        "",
+        `#${sectionId}`
+    );
+}
+
+
+// ========================================
+// 14. SIDEBAR
+// ========================================
+
+function openSidebar() {
+    document.getElementById("sidebar").classList.add("open");
+
+    document.getElementById("sidebarOverlay").classList.add("show");
+}
+
+
+function closeSidebar() {
+    document.getElementById("sidebar").classList.remove("open");
+
+    document.getElementById("sidebarOverlay").classList.remove("show");
+}
+
+
+// ========================================
+// 15. COURSE FILTER
+// ========================================
+
+function handleCourseFilter(event) {
+    const button = event.target.closest(".filter-button");
+
+    if (!button) {
+        return;
+    }
+
+    currentFilter = button.dataset.filter;
+
+    document.querySelectorAll(".filter-button").forEach(item => {
+        item.classList.toggle(
+            "active",
+            item === button
+        );
+    });
+
+    renderCourses();
+}
+
+
+// ========================================
+// 16. NOTIFICATIONS
+// ========================================
+
+function showToast(message) {
+    const toast = document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimeout);
+
+    toastTimeout = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3500);
+}
