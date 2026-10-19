@@ -18,6 +18,7 @@ const lessons = [
         id: 1,
         title: "Бүх юмны унаган төрх",
         description: "тайлбар"
+        videoUrl: "https://www.youtube.com/embed/Mhq2KYVptcg"
     },
     {
         id: 2,
