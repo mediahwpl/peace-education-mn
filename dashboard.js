@@ -18,7 +18,6 @@ const lessons = [
         id: 1,
         title: "Бүх юмны унаган төрх",
         description: "тайлбар"
-        videoUrl: "https://www.youtube.com/embed/Mhq2KYVptcg"
     },
     {
         id: 2,
@@ -1478,293 +1477,309 @@ function showToast(message) {
     }, 3500);
 }
 // ========================================
-// 11. ASSIGNMENT TABLE
+// 17. LOGIN / LOGOUT
 // ========================================
 
-function renderAssignments() {
-    const tbody =
-        document.getElementById("assignmentsTableBody");
+async function handleLogout() {
+    const confirmed = window.confirm(
+        "Та системээс гарахдаа итгэлтэй байна уу?"
+    );
 
-    tbody.replaceChildren();
+    if (!confirmed) {
+        return;
+    }
 
-    lessons.forEach(lesson => {
-        const lessonState = getLessonState(lesson.id);
+    const logoutButton =
+        document.getElementById("logoutButton");
 
-        const status = getLessonStatus(lesson.id);
+    logoutButton.disabled = true;
 
-        const row = document.createElement("tr");
+    try {
+        const { error } = await supabase.auth.signOut();
 
-        const lessonCell = document.createElement("td");
-
-        lessonCell.textContent =
-            `${String(lesson.id).padStart(2, "0")}. ${lesson.title}`;
-
-        const videoCell = document.createElement("td");
-
-        const videoStatus = document.createElement("span");
-
-        videoStatus.className =
-            "table-status " +
-            (
-                lessonState.videoProgress >= 100
-                    ? "completed"
-                    : status === "locked"
-                        ? "locked"
-                        : "pending"
-            );
-
-        videoStatus.textContent =
-            `${Math.round(lessonState.videoProgress)}%`;
-
-        videoCell.appendChild(videoStatus);
-
-
-        const assignmentCell = document.createElement("td");
-
-        const assignmentStatus = document.createElement("span");
-
-        assignmentStatus.className =
-            "table-status " +
-            (
-                lessonState.assignmentSubmitted
-                    ? "completed"
-                    : status === "locked"
-                        ? "locked"
-                        : "pending"
-            );
-
-        assignmentStatus.textContent =
-            lessonState.assignmentSubmitted
-                ? "Илгээсэн"
-                : status === "locked"
-                    ? "Түгжээтэй"
-                    : "Хүлээгдэж буй";
-
-        assignmentCell.appendChild(assignmentStatus);
-
-
-        const actionCell = document.createElement("td");
-
-        const button = document.createElement("button");
-
-        button.className = "table-action";
-
-        button.type = "button";
-
-        button.textContent =
-            status === "locked"
-                ? "Түгжээтэй"
-                : "Нээх";
-
-        button.disabled = status === "locked";
-
-        if (status !== "locked") {
-            button.addEventListener("click", () => {
-                openLesson(lesson.id);
-            });
+        if (error) {
+            throw error;
         }
 
-        actionCell.appendChild(button);
+        window.location.replace("login.html");
 
-        row.append(
-            lessonCell,
-            videoCell,
-            assignmentCell,
-            actionCell
-        );
+    } catch (error) {
+        console.error("Гарахад алдаа гарлаа:", error);
 
-        tbody.appendChild(row);
-    });
-}
-
-
-// ========================================
-// 12. CERTIFICATE
-// ========================================
-
-function renderCertificate() {
-    const stats = getStatistics();
-
-    const eligible =
-        stats.completed === lessons.length &&
-        stats.submitted === lessons.length;
-
-    const downloadButton =
-        document.getElementById("downloadCertificateButton");
-
-    downloadButton.disabled = !eligible;
-
-    document.getElementById("certificateHeading").textContent =
-        eligible
-            ? "Баяр хүргэе! Та сургалтаа дуусгалаа."
-            : "Таны амжилтын аялал үргэлжилж байна";
-
-    document.getElementById("certificateDescription").textContent =
-        eligible
-            ? "Та бүх хичээл болон даалгаврыг дуусгасан байна."
-            : `Үлдсэн хичээл: ${lessons.length - stats.completed}. ` +
-              `Илгээх шаардлагатай даалгавар: ${lessons.length - stats.submitted}.`;
-
-    document.getElementById("certificateNote").textContent =
-        eligible
-            ? "Сертификат үүсгэхэд бэлэн."
-            : "Бүх 12 хичээлийг 100% үзэж, даалгавраа илгээсний дараа нээгдэнэ.";
-
-    const viewButton =
-        document.getElementById("viewCertificateButton");
-
-    viewButton.disabled = !eligible;
-}
-
-
-function downloadDemoCertificate() {
-    const stats = getStatistics();
-
-    const eligible =
-        stats.completed === lessons.length &&
-        stats.submitted === lessons.length;
-
-    if (!eligible) {
         showToast(
-            "Сертификат авахын тулд бүх хичээлийг дуусгана уу."
+            "Системээс гарахад алдаа гарлаа. Дахин оролдоно уу."
         );
+
+        logoutButton.disabled = false;
+    }
+}
+
+
+// ========================================
+// 18. EVENT LISTENERS
+// ========================================
+
+function bindEvents() {
+    document.querySelectorAll(".sidebar-nav").forEach(nav => {
+        nav.addEventListener("click", handleNavigation);
+    });
+
+    document.getElementById("menuToggle")
+        .addEventListener("click", openSidebar);
+
+    document.getElementById("sidebarClose")
+        .addEventListener("click", closeSidebar);
+
+    document.getElementById("sidebarOverlay")
+        .addEventListener("click", closeSidebar);
+
+    document.getElementById("viewAllCourses")
+        .addEventListener("click", () => {
+            showSection("courses");
+        });
+
+    document.getElementById("viewCertificateButton")
+        .addEventListener("click", () => {
+            showSection("certificate");
+        });
+
+    document.getElementById("continueLessonButton")
+        .addEventListener("click", () => {
+            const nextLesson = lessons.find(lesson => {
+                return !isLessonCompleted(lesson.id);
+            });
+
+            if (!nextLesson) {
+                showSection("certificate");
+
+                return;
+            }
+
+            if (!isLessonUnlocked(nextLesson.id)) {
+                showToast(
+                    "Өмнөх хичээлийн видео болон даалгаврыг дуусгана уу."
+                );
+
+                return;
+            }
+
+            openLesson(nextLesson.id);
+        });
+
+    document.getElementById("courseModal")
+        .addEventListener("click", event => {
+            if (
+                event.target.matches("[data-close-modal]") ||
+                event.target.closest("#modalClose")
+            ) {
+                closeLessonModal();
+            }
+        });
+
+    document.addEventListener("keydown", event => {
+        if (
+            event.key === "Escape" &&
+            !document.getElementById("courseModal").hidden
+        ) {
+            closeLessonModal();
+        }
+    });
+
+    document.getElementById("lessonVideo")
+        .addEventListener("timeupdate", updateVideoProgress);
+
+    document.getElementById("lessonVideo")
+        .addEventListener("ended", updateVideoProgress);
+
+    document.getElementById("assignmentForm")
+        .addEventListener("submit", handleAssignmentSubmit);
+
+    document.getElementById("assignmentFile")
+        .addEventListener("change", event => {
+            const file = event.target.files[0];
+
+            document.getElementById("selectedFileName").textContent =
+                file
+                    ? `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`
+                    : "";
+        });
+
+    document.getElementById("allCoursesGrid")
+        .addEventListener("click", handleCourseFilter);
+
+    document.querySelector(".course-filter")
+        .addEventListener("click", handleCourseFilter);
+
+    document.getElementById("downloadCertificateButton")
+        .addEventListener("click", downloadDemoCertificate);
+
+    document.getElementById("logoutButton")
+        .addEventListener("click", handleLogout);
+
+    document.getElementById("notificationButton")
+        .addEventListener("click", () => {
+            showToast(
+                "Одоогоор шинэ мэдэгдэл алга."
+            );
+        });
+
+    document.getElementById("userMenu")
+        .addEventListener("click", () => {
+            showSection("profile");
+        });
+}
+
+
+// ========================================
+// SUPABASE: SESSION AND USER PROFILE
+// ========================================
+
+async function initializeAuthenticatedDashboard() {
+
+    // 1. Нэвтэрсэн хэрэглэгч байгаа эсэхийг шалгана.
+
+    const { data: sessionData, error: sessionError } =
+        await supabase.auth.getSession();
+
+    if (sessionError) {
+        console.error("Session шалгахад алдаа:", sessionError);
+
+        window.location.replace("login.html");
 
         return;
     }
 
-    // Одоогоор PDF үүсгэх функц холбогдоогүй.
+    const session = sessionData.session;
 
-    showToast(
-        "Сертификатын PDF үүсгэх функцийг Supabase-тай холбох шаардлагатай."
-    );
-}
+    if (!session) {
+        window.location.replace("login.html");
 
-
-// ========================================
-// 13. PAGE NAVIGATION
-// ========================================
-
-const pageTitles = {
-    overview: "Хянах самбар",
-    courses: "Миний хичээлүүд",
-    assignments: "Миний даалгавар",
-    certificate: "Сертификат",
-    profile: "Миний профайл"
-};
-
-
-function showSection(sectionId) {
-    const target = document.getElementById(sectionId);
-
-    if (!target || !target.classList.contains("page-section")) {
         return;
     }
 
-    document.querySelectorAll(".page-section").forEach(section => {
-        section.classList.toggle(
-            "active",
-            section.id === sectionId
+    const user = session.user;
+
+    currentUserId = user.id;
+
+
+    // 2. profiles хүснэгтээс хэрэглэгчийн мэдээлэл авна.
+
+    const { data: profile, error: profileError } =
+        await supabase
+            .from("profiles")
+            .select(
+                "surname, first_name, gender, phone, birth_date, email, occupation, organization, position"
+            )
+            .eq("id", user.id)
+            .maybeSingle();
+
+    if (profileError) {
+        console.error(
+            "Профайл уншихад алдаа:",
+            profileError
         );
-    });
 
-    document.querySelectorAll(".nav-link[data-section]").forEach(link => {
-        link.classList.toggle(
-            "active",
-            link.dataset.section === sectionId
+        showToast(
+            "Профайлын мэдээллийг уншиж чадсангүй."
         );
-    });
-
-    document.getElementById("pageTitle").textContent =
-        pageTitles[sectionId] || "Хянах самбар";
-
-    closeSidebar();
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
-
-
-function handleNavigation(event) {
-    const link = event.target.closest(
-        ".nav-link[data-section]"
-    );
-
-    if (!link) {
-        return;
     }
 
-    event.preventDefault();
 
-    const sectionId = link.dataset.section;
+    // 3. Хэрэглэгчийн мэдээллийг dashboard-д харуулна.
 
-    showSection(sectionId);
+    const firstName =
+        profile?.first_name ||
+        user.user_metadata?.first_name ||
+        "Суралцагч";
 
-    history.replaceState(
-        null,
-        "",
-        `#${sectionId}`
-    );
-}
+    const surname =
+        profile?.surname ||
+        user.user_metadata?.surname ||
+        "";
+
+    const fullName = `${surname} ${firstName}`.trim();
+
+    state.user = {
+        fullName: fullName || "Суралцагч",
+
+        email: profile?.email || user.email || "",
+
+        userType: "individual",
+
+        organization: profile?.organization || "",
+
+        occupation: profile?.occupation || "",
+
+        position: profile?.position || ""
+    };
+
+    renderUserInfo();
 
 
-// ========================================
-// 14. SIDEBAR
-// ========================================
+    // 4. Сургалтын ахицыг Supabase-аас уншина.
 
-function openSidebar() {
-    document.getElementById("sidebar").classList.add("open");
+    try {
+        await loadProgressFromSupabase(user.id);
 
-    document.getElementById("sidebarOverlay").classList.add("show");
-}
+    } catch (progressError) {
 
+        console.error(
+            "Сургалтын ахиц уншихад алдаа:",
+            progressError
+        );
 
-function closeSidebar() {
-    document.getElementById("sidebar").classList.remove("open");
-
-    document.getElementById("sidebarOverlay").classList.remove("show");
-}
-
-
-// ========================================
-// 15. COURSE FILTER
-// ========================================
-
-function handleCourseFilter(event) {
-    const button = event.target.closest(".filter-button");
-
-    if (!button) {
-        return;
+        showToast(
+            "Сургалтын ахицыг уншиж чадсангүй. course_progress хүснэгт болон RLS тохиргоог шалгана уу."
+        );
     }
 
-    currentFilter = button.dataset.filter;
 
-    document.querySelectorAll(".filter-button").forEach(item => {
-        item.classList.toggle(
-            "active",
-            item === button
-        );
-    });
+    // 5. Dashboard-ийн интерфэйсийг ажиллуулна.
+
+    document.getElementById("currentYear").textContent =
+        new Date().getFullYear();
 
     renderCourses();
+
+    renderAssignments();
+
+    renderStatistics();
+
+    bindEvents();
+
+
+    // 6. URL-ийн hash-аас эхний хуудсыг сонгоно.
+
+    const initialSection =
+        window.location.hash.replace("#", "");
+
+    if (pageTitles[initialSection]) {
+        showSection(initialSection);
+    }
 }
 
 
 // ========================================
-// 16. NOTIFICATIONS
+// 19. INITIALIZE
 // ========================================
 
-function showToast(message) {
-    const toast = document.getElementById("toast");
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
 
-    toast.textContent = message;
+        try {
+            await initializeAuthenticatedDashboard();
 
-    toast.classList.add("show");
+        } catch (error) {
 
-    clearTimeout(toastTimeout);
+            console.error(
+                "Dashboard эхлүүлэхэд алдаа гарлаа:",
+                error
+            );
 
-    toastTimeout = setTimeout(() => {
-        toast.classList.remove("show");
-    }, 3500);
-}
+            showToast(
+                "Dashboard ачаалахад алдаа гарлаа. Дахин нэвтэрнэ үү."
+            );
+        }
+    }
+);
