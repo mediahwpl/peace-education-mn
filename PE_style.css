@@ -162,7 +162,7 @@
             135deg,
             rgba(26, 32, 54, 0.7),
             rgba(4, 26, 99, 0.7)
-        ), url("PE-hero-bg.png");
+        ), url("pe-hero-bg.jpg");
     background-size: cover; 
     background-position: center; 
     z-index:-3;
@@ -271,7 +271,7 @@
             rgba(217, 240, 255, 0.7),
             rgba(167, 216, 245, 0.7),
             rgba(74, 158, 210, 0.7)
-        ), url('sfdh.JPG');
+        ), url('sfdh.webp');
     background-size: cover;
     background-position: center;
 }
