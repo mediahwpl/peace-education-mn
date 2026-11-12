@@ -48,9 +48,9 @@
     --light-bg: #f6f9fc;
     --border: #e2eaf2;
 
-    --shadow-sm: 0 5px 18px rgba(16, 44, 75, 0.06);
-    --shadow-md: 0 12px 32px rgba(16, 44, 75, 0.10);
-    --shadow-lg: 0 22px 55px rgba(16, 44, 75, 0.14);
+    --shadow-sm: 0 10px 30px rgba(0,0,0,0.08);
+    --shadow-md: 0 15px 40px rgba(0,0,0,0.3);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
 
     --radius-sm: 12px;
     --radius-md: 20px;
@@ -60,33 +60,6 @@
 
     --font-main: "Noto Sans Mongolian", sans-serif;
     --font-heading: "Montserrat", "Noto Sans Mongolian", sans-serif;
-}
-
-.section-heading {
-    max-width: 760px;
-    margin: 0 auto 65px;
-    text-align: center;
-}
-
-.section-heading h2,
-.outcomes-content h2 {
-    font-family: var(--font-main);
-    color: var(--navy);
-
-    font-size: clamp(30px, 4vw, 44px);
-    font-weight: 700;
-    line-height: 1.45;
-
-    margin-bottom: 20px;
-}
-
-.section-heading > p {
-    max-width: 650px;
-    margin-inline: auto;
-
-    color: var(--muted);
-    font-size: 15px;
-    line-height: 2;
 }
 
 /* =========================================
@@ -217,7 +190,7 @@
     display: inline-block;
     font-size: 15px;
     font-weight: 600;
-    color: var(--primary);
+    color: #c07d56;
     letter-spacing: 2px;
     margin-bottom: 18px;
     position: relative;
@@ -226,11 +199,6 @@
 .about-pe-text h2 {
     font-size: 3em;
     margin-bottom: 15px;
-}
-
-.about-pe-text h2 span, 
-.about-pe-text h2 span { 
-    color: var(--primary); 
 }
 
 .about-pe-text p {
@@ -261,16 +229,10 @@
     overflow: hidden;
     border-radius: var(--radius-lg);
     background: 
-        radial-gradient(
-            circle at 30% 30%,
-            rgba(255, 255, 255, 0.45),
-            transparent 25%
-        ),
+        
         linear-gradient(
             145deg,
-            rgba(217, 240, 255, 0.7),
-            rgba(167, 216, 245, 0.7),
-            rgba(74, 158, 210, 0.7)
+            rgba(0, 102, 204, 0.7)
         ), url('sfdh.webp');
     background-size: cover;
     background-position: center;
@@ -311,7 +273,7 @@
 
 .about-pe-image-caption {
     margin-top: 24px;
-    color: #15527b;
+    color: #fff;
     font-family: var(--font-heading);
     font-size: 11px;
     font-weight: 800;
@@ -331,12 +293,11 @@
 
 .about-pe-quote > i {
     margin-bottom: 10px;
-    color: var(--primary);
+    color: #c07d56;
     font-size: 24px;
 }
 
 .about-pe-quote p {
-    color: var(--navy);
     font-size: 13px;
     font-weight: 600;
     line-height: 2;
@@ -344,7 +305,6 @@
 
 .about-pe-content h3 {
     margin-bottom: 22px;
-    color: var(--navy);
     font-size: 26px;
     line-height: 1.6;
 }
@@ -388,7 +348,7 @@
     display: inline-block;
     font-size: 15px;
     font-weight: 600;
-    color: var(--primary);
+    color: #c07d56;
     letter-spacing: 2px;
     margin-bottom: 18px;
     position: relative;
@@ -397,11 +357,6 @@
 .structure-pe-text h2 {
     font-size: 3em;
     margin-bottom: 15px;
-}
-
-.structure-pe-text h2 span, 
-.structure-pe-text h2 span { 
-    color: var(--primary); 
 }
 
 .structure-pe-text p {
@@ -419,7 +374,7 @@
     position: relative;
     overflow: hidden;
     padding: 42px;
-    border: 1px solid var(--border);
+    
     border-radius: var(--radius-lg);
     background: var(--white);
     box-shadow: var(--shadow-sm);
@@ -454,7 +409,7 @@
     top: 20px;
     right: 28px;
     z-index: 1;
-    color: rgba(8, 121, 189, 0.17);
+    color: rgba(8, 121, 189, 0.3);
     font-family: var(--font-heading);
     font-size: 65px;
     font-weight: 800;
@@ -511,9 +466,43 @@
 /* =========================================
    7. LESSONS SECTION
 ========================================= */
-
-.lessons-section {
+.lessons {
+    padding: 110px 0;
     background: var(--white);
+}
+
+.lessons-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center; 
+    gap: 60px;
+    text-align: center;
+}
+
+.lessons-text {
+    flex: 1;
+}
+
+.lessons-label {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #c07d56;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+    position: relative;
+}
+
+.lessons-text h2 {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.lessons-text > p {
+    font-size: 1em;
+    line-height: 1.6;
 }
 
 .lesson-group + .lesson-group {
@@ -779,6 +768,16 @@
 
 .outcomes-content h2 {
     margin-bottom: 25px;
+}
+.outcomes-content h2 {
+    font-family: var(--font-main);
+    color: var(--navy);
+
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 700;
+    line-height: 1.45;
+
+    margin-bottom: 20px;
 }
 
 .outcomes-content > p {
