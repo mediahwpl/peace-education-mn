@@ -507,9 +507,21 @@ gap:40px;
 margin-bottom:20px;
 }
 
-.footer-col a{
+.footer-col p{
 line-height:1.6;
 color:#ccc;
+}
+
+.footer-col a{
+display: block;
+line-height: 1.6;
+color: #ccc;
+text-decoration: none;
+transition: color 0.3s ease;
+}
+
+.footer-col a:hover{
+color:#f06f24;
 }
 
 .footer-col ul li{
