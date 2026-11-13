@@ -211,7 +211,7 @@
     grid-template-columns: 0.9fr 1.1fr;
 
     gap: 80px;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .about-pe-visual {
@@ -466,12 +466,13 @@
 /* =========================================
    7. LESSONS SECTION
 ========================================= */
-.lessons {
-    padding: 110px 0;
-    background: var(--white);
+.pe-lessons {
+    padding: 50px 20px;
+    background: #fff;
+    
 }
 
-.lessons-container {
+.pe-lessons-container {
     max-width: 1600px;
     margin: 0 auto;
     display: flex;
@@ -481,11 +482,11 @@
     text-align: center;
 }
 
-.lessons-text {
+.pe-lessons-text {
     flex: 1;
 }
 
-.lessons-label {
+.pe-lessons-label {
     display: inline-block;
     font-size: 15px;
     font-weight: 600;
@@ -493,23 +494,24 @@
     letter-spacing: 2px;
     margin-bottom: 18px;
     position: relative;
+    margin-top: 60px;
 }
 
-.lessons-text h2 {
+.pe-lessons-text h2 {
     font-size: 3em;
     margin-bottom: 15px;
 }
 
-.lessons-text > p {
+.pe-lessons-text > p {
     font-size: 1em;
     line-height: 1.6;
 }
 
-.lesson-group + .lesson-group {
+.pe-lesson-group + .pe-lesson-group {
     margin-top: 85px;
 }
 
-.lesson-group-heading {
+.pe-lesson-group-heading {
     display: flex;
     align-items: flex-start;
     gap: 25px;
@@ -520,7 +522,7 @@
     border-bottom: 1px solid var(--border);
 }
 
-.lesson-group-number {
+.pe-lesson-group-number {
     width: 62px;
     height: 62px;
 
@@ -539,12 +541,12 @@
     font-weight: 800;
 }
 
-.second-lesson-group .lesson-group-number {
+.pe-second-lesson-group .pe-lesson-group-number {
     color: #15815e;
     background: #eaf8f3;
 }
 
-.lesson-group-heading > div:last-child > span {
+.pe-lesson-group-heading > div:last-child > span {
     display: inline-block;
 
     margin-bottom: 7px;
@@ -557,11 +559,11 @@
     letter-spacing: 1.5px;
 }
 
-.second-lesson-group .lesson-group-heading > div:last-child > span {
+.pe-second-lesson-group .pe-lesson-group-heading > div:last-child > span {
     color: #15815e;
 }
 
-.lesson-group-heading h3 {
+.pe-lesson-group-heading h3 {
     margin-bottom: 10px;
 
     color: var(--navy);
@@ -570,20 +572,20 @@
     line-height: 1.7;
 }
 
-.lesson-group-heading p {
+.pe-lesson-group-heading p {
     color: var(--muted);
     font-size: 13px;
     line-height: 2;
 }
 
-.lessons-grid {
+.pe-lessons-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
 
     gap: 22px;
 }
 
-.lesson-card {
+.pe-lesson-card {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -603,7 +605,7 @@
         box-shadow 0.3s ease;
 }
 
-.lesson-card:hover {
+.pe-lesson-card:hover {
     transform: translateY(-6px);
 
     border-color: #b9dff5;
@@ -611,7 +613,7 @@
     box-shadow: var(--shadow-md);
 }
 
-.lesson-card-top {
+.pe-lesson-card-top {
     width: 100%;
 
     display: flex;
@@ -622,7 +624,7 @@
     margin-bottom: 23px;
 }
 
-.lesson-number {
+.pe-lesson-number {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -641,7 +643,7 @@
     font-weight: 800;
 }
 
-.lesson-tag {
+.pe-lesson-tag {
     display: inline-block;
 
     padding: 5px 8px;
@@ -657,7 +659,7 @@
     text-align: center;
 }
 
-.lesson-icon {
+.pe-lesson-icon {
     width: 54px;
     height: 54px;
 
@@ -674,7 +676,7 @@
     font-size: 23px;
 }
 
-.lesson-card h4 {
+.pe-lesson-card h4 {
     margin-bottom: 13px;
 
     color: var(--navy);
@@ -684,7 +686,7 @@
     line-height: 1.9;
 }
 
-.lesson-card > p {
+.pe-lesson-card > p {
     flex-grow: 1;
 
     margin-bottom: 20px;
@@ -695,7 +697,7 @@
     line-height: 2;
 }
 
-.lesson-expand {
+.pe-lesson-expand {
     width: 100%;
 
     display: flex;
@@ -720,17 +722,17 @@
     text-align: left;
 }
 
-.lesson-expand i {
+.pe-lesson-expand i {
     font-size: 10px;
 
     transition: transform 0.25s ease;
 }
 
-.lesson-expand[aria-expanded="true"] i {
+.pe-lesson-expand[aria-expanded="true"] i {
     transform: rotate(180deg);
 }
 
-.lesson-details {
+.pe-lesson-details {
     width: 100%;
     margin-top: 15px;
     padding-top: 13px;
@@ -738,14 +740,14 @@
     border-top: 1px dashed var(--border);
 }
 
-.lesson-details p {
+.pe-lesson-details p {
     color: var(--muted);
 
     font-size: 12px;
     line-height: 2;
 }
 
-.lesson-details[hidden] {
+.pe-lesson-details[hidden] {
     display: none;
 }
 
