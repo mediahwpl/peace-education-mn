@@ -75,7 +75,6 @@
     display:flex;
     justify-content:center;
     align-items:center;
-    
 }
 
 .pe-hero-bg{
@@ -91,7 +90,6 @@
     background-size: cover; 
     background-position: center; 
     z-index:-3;
-    
 }
 
 .pe-hero-content {
@@ -120,12 +118,12 @@
 ========================================= */
 
 #about-pe {
-    padding: 50px 20px;
+    padding: 200px 20px;
     background: #f9f9f9;
 }
 
 .about-pe-container {
-    max-width: 1600px;
+    max-width: 1500px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -283,7 +281,7 @@
 }
 
 .structure-pe-container {
-    max-width: 1600px;
+    max-width: 1500px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -332,6 +330,7 @@
     transition:
         transform 0.3s ease,
         box-shadow 0.3s ease;
+        margin-bottom: 150px;
 }
 
 .structure-card:hover {
@@ -420,16 +419,16 @@
 .pe-lessons {
     padding: 50px 20px;
     background: #fff;
-    
 }
 
 .pe-lessons-container {
-    max-width: 1600px;
+    max-width: 1500px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     align-items: center; 
     gap: 60px;
+    margin-top: 100px;
 }
 
 .pe-lessons-text {
@@ -652,14 +651,14 @@
 }
 
 .outcomes-container {
-    max-width: 1600px;
+    max-width: 1500px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     align-items: center; 
     gap: 60px;
     text-align: center;
-    margin-top: 60px;
+    margin-top: 200px;
 }
 
 .outcomes-label {
@@ -770,15 +769,15 @@
 }
 
 .features-container {
-    max-width: 1600px;
+    max-width: 1500px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     align-items: center; 
     gap: 60px;
     text-align: center;
-    margin-top: 40px;
-    margin-bottom: 70px;
+    margin-top: 200px;
+    
 }
 
 .features-text {
@@ -885,7 +884,7 @@
         ), url("pe-cta.webp");
     background-size: cover;
     background-position: center;
-    
+    margin-top: 200px;
 }
 
 
@@ -1469,4 +1468,97 @@ color:#fff;
         transition-duration: 0.01ms !important;
     }
 
+}
+
+/* =================================
+   ЭХНИЙ GRID – 1-4-р хичээл
+================================= */
+
+/* 1-р хичээл */
+.pe-lesson-card:nth-child(1) .pe-lesson-number,
+.pe-lesson-card:nth-child(1) .pe-lesson-icon {
+    color: #00914c;
+    background: #00914c38;
+}
+
+/* 2-р хичээл */
+.pe-lesson-card:nth-child(2) .pe-lesson-number,
+.pe-lesson-card:nth-child(2) .pe-lesson-icon {
+    color: #1a9dd9;
+    background: #1a9dd938;
+}
+
+/* 3-р хичээл */
+.pe-lesson-card:nth-child(3) .pe-lesson-number,
+.pe-lesson-card:nth-child(3) .pe-lesson-icon {
+    color: #2e2c7e;
+    background: #2d2c7e38;
+}
+
+/* 4-р хичээл */
+.pe-lesson-card:nth-child(4) .pe-lesson-number,
+.pe-lesson-card:nth-child(4) .pe-lesson-icon {
+    color: #60c4e0;
+    background: #60c4e038;
+}
+
+
+/* =================================
+   ХОЁР ДАХЬ GRID – 5-12-р хичээл
+================================= */
+
+/* 5-р хичээл */
+.pe-second-lesson-group .pe-lesson-card:nth-child(1) .pe-lesson-number,
+.pe-second-lesson-group .pe-lesson-card:nth-child(1) .pe-lesson-icon {
+    color: #eb5b25;
+    background: #eb5b2538;
+}
+
+/* 6-р хичээл */
+.pe-second-lesson-group .pe-lesson-card:nth-child(2) .pe-lesson-number,
+.pe-second-lesson-group .pe-lesson-card:nth-child(2) .pe-lesson-icon {
+    color: #d6065d;
+    background: #d6065d38;
+}
+
+/* 7-р хичээл */
+.pe-second-lesson-group .pe-lesson-card:nth-child(3) .pe-lesson-number,
+.pe-second-lesson-group .pe-lesson-card:nth-child(3) .pe-lesson-icon {
+    color: #ffcc03;
+    background: #ffcc0338;
+}
+
+/* 8-р хичээл */
+.pe-second-lesson-group .pe-lesson-card:nth-child(4) .pe-lesson-number,
+.pe-second-lesson-group .pe-lesson-card:nth-child(4) .pe-lesson-icon {
+    color: #8bcbb7;
+    background: #8bcbb738;
+}
+
+/* 9-р хичээл */
+.pe-second-lesson-group .pe-lesson-card:nth-child(5) .pe-lesson-number,
+.pe-second-lesson-group .pe-lesson-card:nth-child(5) .pe-lesson-icon {
+    color: #e28e04;
+    background: #e28e0438;
+}
+
+/* 10-р хичээл */
+.pe-second-lesson-group .pe-lesson-card:nth-child(6) .pe-lesson-number,
+.pe-second-lesson-group .pe-lesson-card:nth-child(6) .pe-lesson-icon {
+    color: #53ae32;
+    background: #53ae3238;
+}
+
+/* 11-р хичээл */
+.pe-second-lesson-group .pe-lesson-card:nth-child(7) .pe-lesson-number,
+.pe-second-lesson-group .pe-lesson-card:nth-child(7) .pe-lesson-icon {
+    color: #3973b9;
+    background: #3973b938;
+}
+
+/* 12-р хичээл */
+.pe-second-lesson-group .pe-lesson-card:nth-child(8) .pe-lesson-number,
+.pe-second-lesson-group .pe-lesson-card:nth-child(8) .pe-lesson-icon {
+    color: #822181;
+    background: #82218138;
 }

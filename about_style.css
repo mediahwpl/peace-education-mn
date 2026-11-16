@@ -72,7 +72,7 @@
 
                                                /* ==== who we are Section ==== */
 #who-we-are {
-    padding: 100px 20px;
+    padding: 200px 20px;
     background: #fff;
 }
 .who-we-are-container {
@@ -112,7 +112,7 @@
 }
                                        /*==== video section ====*/
 #organization-video {
-    padding: 120px 20px;
+    padding: 200px 20px;
     background: #f9f9f9;
 
 }
@@ -136,7 +136,7 @@
 
                                        /* ==== goal ==== */
 #goal {
-    padding: 100px 20px;
+    padding: 200px 20px;
     background: #fff;
 }
 .goal-container {
@@ -169,7 +169,7 @@
 
                                        /* ==== vision ==== */
 #vision {
-    padding: 100px 20px;
+    padding: 200px 20px;
     background: #fff;
 }    
 .vision-container {
