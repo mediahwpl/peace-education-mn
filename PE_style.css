@@ -882,7 +882,9 @@
             135deg,
             rgba(26, 32, 54, 0.96),
             rgba(52, 128, 226, 0.88)
-        ), url("pe-cta.jpg");
+        ), url("pe-cta.webp");
+    background-size: cover;
+    background-position: center;
     
 }
 
