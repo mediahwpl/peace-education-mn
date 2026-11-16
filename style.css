@@ -889,3 +889,81 @@ header{
         transform: none;
     }
 }
+
+/* ==== MOBILE LESSON CAROUSEL ==== */
+
+@media (max-width: 768px) {
+
+    #lessons {
+        padding: 70px 15px;
+        overflow: hidden;
+    }
+
+    #lessons h2 {
+        font-size: 22px;
+        margin-bottom: 30px;
+    }
+
+    .lesson-grid {
+        display: grid;
+
+        /* Хичээлүүдийг нэг мөрөнд байрлуулах */
+        grid-auto-flow: column;
+        grid-auto-columns: 100%;
+
+        /* Өмнөх grid тохиргоог хүчингүй болгох */
+        grid-template-columns: none;
+        grid-template-rows: 1fr;
+
+        gap: 15px;
+
+        /* Хажуу тийш гүйлгэх */
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+
+        padding: 5px 2px 20px;
+    }
+
+    .lesson-card {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+
+        scroll-snap-align: center;
+    }
+
+    .lesson-card img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    /* Утасны дэлгэцэнд hover эффект хэрэглэхгүй */
+    .lesson-card:hover {
+        transform: none;
+    }
+
+    .lesson-card:hover img {
+        transform: none;
+    }
+
+    /* Гүйлгэх мөр */
+    .lesson-grid::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .lesson-grid::-webkit-scrollbar-track {
+        background: #e8edf5;
+        border-radius: 10px;
+    }
+
+    .lesson-grid::-webkit-scrollbar-thumb {
+        background: #3480e2;
+        border-radius: 10px;
+    }
+}
+```
