@@ -449,139 +449,307 @@ input {
     color: var(--primary);
 }
 
+/* ===================================
+   TABLET RESPONSIVE
+   1024px болон түүнээс доош
+=================================== */
 
-/* ==============================
-   RESPONSIVE DESIGN
-================================ */
+@media (max-width: 1024px) {
 
-@media (max-width: 900px) {
-
-    .login-page {
-        grid-template-columns: 0.85fr 1.15fr;
+    /* Header */
+    .navbar {
+        padding: 18px 30px;
     }
 
+    .nav-links {
+        gap: 20px;
+    }
+
+    /* Login layout */
     .login-visual {
-        padding: 36px 8%;
+        padding: 40px 7%;
     }
 
     .visual-content h1 {
-        font-size: 38px;
-    }
-
-    .visual-content p {
-        font-size: 14px;
+        font-size: clamp(32px, 4vw, 46px);
     }
 
     .login-content {
-        padding: 36px 24px;
-    }
-
-}
-
-
-@media (max-width: 650px) {
-
-    .login-page {
-        display: block;
-    }
-
-    .login-visual {
-        display: none;
-    }
-
-    .login-content {
-        min-height: 100vh;
-
-        padding: 40px 24px;
+        padding: 40px 30px;
     }
 
     .login-card {
-        max-width: 420px;
-        margin: auto;
+        max-width: 400px;
+    }
+}
+
+
+/* ===================================
+   MOBILE RESPONSIVE
+   768px болон түүнээс доош
+=================================== */
+
+@media (max-width: 768px) {
+
+    /* Header */
+    .navbar {
+        padding: 14px 20px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .logo img {
+        height: 48px;
+    }
+
+    .nav-links {
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        font-size: 13px;
     }
 
 
+    /* Login layout */
+    .login-page {
+        grid-template-columns: 1fr;
+        min-height: 100vh;
+    }
+
+
+    /* Left visual panel */
+    .login-visual {
+        min-height: 280px;
+        padding: 28px 7%;
+    }
+
+    .login-logo img {
+        width: 115px;
+    }
+
+    .visual-content {
+        margin: 25px 0 0;
+        padding: 20px 0;
+    }
+
+    .visual-label {
+        margin-bottom: 15px;
+        padding: 7px 12px;
+        font-size: 10px;
+    }
+
+    .visual-content h1 {
+        margin-bottom: 14px;
+        font-size: 34px;
+    }
+
+    .visual-content p {
+        max-width: 500px;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .visual-decoration {
+        margin-top: 20px;
+        font-size: 12px;
+    }
+
+    .visual-decoration i {
+        font-size: 20px;
+    }
+
+
+    /* Right content */
+    .login-content {
+        padding: 45px 25px;
+    }
+
+    .login-card {
+        max-width: 460px;
+    }
 
     .login-heading {
-        margin-bottom: 30px;
+        margin-bottom: 28px;
     }
 
     .login-heading h2 {
         font-size: 32px;
     }
+}
 
-    .login-divider {
-        margin: 26px 0;
+
+/* ===================================
+   SMALL MOBILE
+   480px болон түүнээс доош
+=================================== */
+
+@media (max-width: 480px) {
+
+    /* Header */
+    .navbar {
+        padding: 12px 16px;
     }
 
+    .logo img {
+        height: 42px;
+    }
+
+    .nav-links {
+        width: 100%;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .nav-links a {
+        font-size: 11px;
+    }
+
+
+    /* Visual panel */
+    .login-visual {
+        min-height: 210px;
+        padding: 22px 24px;
+    }
+
+    .login-logo img {
+        width: 100px;
+    }
+
+    .visual-content {
+        margin-top: 15px;
+        padding: 10px 0;
+    }
+
+    .visual-label {
+        margin-bottom: 12px;
+        font-size: 9px;
+        letter-spacing: 1.5px;
+    }
+
+    .visual-content h1 {
+        font-size: 27px;
+        line-height: 1.25;
+        margin-bottom: 10px;
+    }
+
+    .visual-content p {
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .visual-decoration {
+        margin-top: 15px;
+        font-size: 11px;
+    }
+
+    .visual-decoration i {
+        font-size: 18px;
+    }
+
+
+    /* Login content */
+    .login-content {
+        padding: 35px 22px;
+    }
+
+    .login-heading {
+        margin-bottom: 25px;
+    }
+
+    .login-subtitle {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+    }
+
+    .login-heading h2 {
+        font-size: 28px;
+    }
+
+    .login-heading p {
+        font-size: 13px;
+    }
+
+
+    /* Form */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .input-wrapper input {
+        height: 50px;
+        font-size: 13px;
+    }
+
+    .input-icon {
+        font-size: 14px;
+    }
+
+    .toggle-password {
+        right: 12px;
+    }
+
+
+    /* Login button */
+    .login-button {
+        height: 50px;
+        font-size: 13px;
+    }
+
+
+    /* Register */
+    .login-divider {
+        margin: 25px 0;
+    }
+
+    .register-prompt {
+        font-size: 12px;
+    }
+
+    .back-home {
+        margin-top: 28px;
+        font-size: 11px;
+    }
 }
 
-                                             /* ==== Footer ==== */
-footer{
-background:#1a2036;
-color: #fff;
-padding:60px 20px 20px;
-}
 
-.footer-container{
-max-width:1200px;
-margin:auto;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:40px;
-}
+/* ===================================
+   EXTRA SMALL MOBILE
+   360px болон түүнээс доош
+=================================== */
 
-.footer-col h3{
-margin-bottom:20px;
-}
+@media (max-width: 360px) {
 
-.footer-col p{
-line-height:1.6;
-color:#ccc;
-}
+    .login-visual {
+        padding: 20px;
+    }
 
-.footer-col ul li{
-margin-bottom:10px;
-}
+    .visual-content h1 {
+        font-size: 24px;
+    }
 
-.footer-col ul li a{
-color:#ccc;
-transition:0.3s;
-}
+    .visual-content p {
+        font-size: 11px;
+    }
 
-.footer-col ul li a:hover{
-color:#f06f24;
-}
+    .login-content {
+        padding: 30px 17px;
+    }
 
-.social-icons{
-display:flex;
-gap:15px;
-margin-top:10px;
-}
+    .login-heading h2 {
+        font-size: 25px;
+    }
 
-.social-icons a{
-width:40px;
-height:40px;
-display:flex;
-align-items:center;
-justify-content:center;
-background:#2b3155;
-color:#fff;
-border-radius:50%;
-font-size:18px;
-transition:0.3s;
-}
+    .password-label {
+        gap: 5px;
+    }
 
-.social-icons a:hover{
-background:#f06f24;
-transform:translateY(-3px);
-box-shadow: 0 10px 10px rgba(0,0,0,0.3);
-}
-
-.footer-bottom{
-text-align:center;
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(48, 48, 48, 0.38);
-color:#aaa;
+    .forgot-password {
+        font-size: 11px;
+    }
 }
