@@ -711,3 +711,17 @@ header{
 }
 
 }
+
+    /* Footer */
+    .footer-container {
+        gap: 25px;
+    }
+
+    .footer-col h3 {
+        font-size: 18px;
+    }
+
+    .footer-col p,
+    .footer-col a {
+        font-size: 14px;
+}
