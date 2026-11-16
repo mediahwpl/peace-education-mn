@@ -633,6 +633,10 @@
     line-height: 2;
 }
 
+.pe-lesson-details p strong {
+    color: var(--navy);
+}
+
 .pe-lesson-details[hidden] {
     display: none;
 }

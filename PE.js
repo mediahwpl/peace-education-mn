@@ -17,7 +17,7 @@ lessonButtons.forEach(function (button) {
         const isExpanded =
             button.getAttribute("aria-expanded") === "true";
 
-        // Одоогийн дэлгэрэнгүй хэсгийг нээх эсвэл хаах
+        // Одоогийн Гол ойлголт хэсгийг нээх эсвэл хаах
         button.setAttribute(
             "aria-expanded",
             String(!isExpanded)
@@ -29,7 +29,7 @@ lessonButtons.forEach(function (button) {
         const buttonIcon = button.querySelector("i");
 
         button.childNodes[0].textContent = isExpanded
-            ? "Дэлгэрэнгүй "
+            ? "Гол ойлголт "
             : "Хураах ";
 
         if (buttonIcon) {
